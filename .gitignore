@@ -1,0 +1,57 @@
+# =============================================================================
+# Markdown Editor - Git Ignore
+# =============================================================================
+
+# === BINARIES / BINARIOS ===
+# wkhtmltopdf - external tool, download separately
+# wkhtmltopdf - herramienta externa, descargar por separado
+src/wkhtmltopdf/
+
+# === PYTHON ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# === VIRTUAL ENVIRONMENTS / ENTORNOS VIRTUALES ===
+.env
+.venv
+env/
+venv/
+ENV/
+
+# === IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# === OS ===
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === PROJECT SPECIFIC / ESPECÍFICO DEL PROYECTO ===
+# Temporary python path file / Archivo temporal de ruta Python
+src/_python_path.bat
+
+# Distribution zips are in dist/ but we track them
+# Los zips de distribución están en dist/ pero los trackeamos
+# dist/

@@ -1,0 +1,10 @@
+{
+  "language": "fr",
+  "ui": {
+    "editor_font_size": 18,
+    "preview_font_size": 22,
+    "preview_frozen": true,
+    "editor_collapsed": false,
+    "preview_collapsed": false
+  }
+}
