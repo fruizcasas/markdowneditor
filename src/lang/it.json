@@ -2,7 +2,8 @@
   "_meta": {
     "code": "it",
     "name_native": "Italiano",
-    "name_english": "Italian"
+    "name_english": "Italian",
+    "flag": "🇮🇹"
   },
   "menu": {
     "file": "File",
@@ -12,6 +13,9 @@
     "help": "Aiuto",
     "new": "Nuovo",
     "open": "Apri...",
+    "recent_files": "File Recenti",
+    "clear_recent": "Gestisci Recenti...",
+    "no_recent": "(Nessun file recente)",
     "save": "Salva",
     "save_as": "Salva con nome...",
     "export_pdf": "Esporta PDF...",
@@ -48,7 +52,8 @@
     "copy_html": "Copia HTML",
     "change_theme": "Cambia tema",
     "frozen": "Blocca anteprima (non aggiornare)",
-    "refresh_preview": "Aggiorna anteprima adesso"
+    "refresh_preview": "Aggiorna anteprima adesso",
+    "change_language": "Cambia lingua"
   },
   "find": {
     "placeholder": "Cerca...",
@@ -91,6 +96,8 @@
     "error_open": "Impossibile aprire",
     "error_save": "Impossibile salvare",
     "error_extension": "Solo file .md, .txt o .markdown",
+    "file_not_found": "File non trovato",
+    "file_not_found_msg": "Il file non esiste più:\n{filepath}\n\nRimuovere dai recenti?",
     "copy_html_title": "Copia HTML",
     "copy_html_instructions": "Salvato: {filename}\n\n1. Seleziona tutto (Ctrl+A)\n2. Copia (Ctrl+C)\n3. Incolla in Outlook (Ctrl+V)\n\nLa formattazione verrà mantenuta.",
     "wkhtmltopdf_title": "wkhtmltopdf non trovato",
@@ -98,6 +105,11 @@
     "download_title": "Download manuale richiesto",
     "download_instructions": "Pagina di download aperta.\n\n1. Scarica la versione Windows (64-bit)\n2. Installa o estrai l'eseguibile\n3. Copia 'wkhtmltopdf.exe' in:\n   {path}\n\nPoi potrai esportare in PDF.",
     "about_title": "Informazioni",
+    "recent_title": "Gestisci file recenti",
+    "recent_delete_selected": "Elimina selezionati",
+    "recent_clear_all": "Cancella tutto",
+    "recent_close": "Chiudi",
+    "recent_none_selected": "Nessun elemento selezionato",
     "about_msg": "{app_name} v{version}\n\nCtrl+N/O/S - Nuovo/Apri/Salva\nCtrl+Z/Y - Annulla/Ripristina\nCtrl+Rotella - Zoom editor\nCtrl+Rotella su anteprima - Zoom anteprima\nTrascina .md per aprire"
   },
   "style_editor": {
@@ -154,5 +166,39 @@
       "text_align": "Allineamento",
       "text_decoration": "Decorazione"
     }
+  },
+  "snippet": {
+    "h1": { "label": "Titolo H1", "content": "# Titolo principale\n\n" },
+    "h2": { "label": "Titolo H2", "content": "## Sezione\n\n" },
+    "h3": { "label": "Titolo H3", "content": "### Sottosezione\n\n" },
+    "bullet_list": { "label": "Elenco puntato", "content": "- Elemento 1\n- Elemento 2\n- Elemento 3\n\n" },
+    "numbered_list": { "label": "Elenco numerato", "content": "1. Primo passo\n2. Secondo passo\n3. Terzo passo\n\n" },
+    "table": { "label": "Tabella", "content": "| Colonna 1 | Colonna 2 | Colonna 3 |\n|-----------|-----------|-----------|\n| Dato 1    | Dato 2    | Dato 3    |\n| Dato 4    | Dato 5    | Dato 6    |\n\n" },
+    "code_block": { "label": "Blocco di codice", "content": "```python\n# Il tuo codice qui\ndef esempio():\n    return \"Ciao mondo\"\n```\n\n" },
+    "inline_code": { "label": "Codice inline", "content": "`codice qui`" },
+    "quote": { "label": "Citazione", "content": "> Questa è una citazione o nota importante.\n> Può avere più righe.\n\n" },
+    "link": { "label": "Link", "content": "[Testo del link](https://url-qui.com)" },
+    "image": { "label": "Immagine", "content": "![Testo alternativo](percorso/immagine.png)" },
+    "separator": { "label": "Separatore orizzontale", "content": "\n---\n\n" },
+    "note": { "label": "Nota", "content": "<div class=\"callout-note\">\n\n**Nota:** Informazioni aggiuntive o chiarimenti utili.\n\n</div>\n\n" },
+    "warning": { "label": "Avvertenza", "content": "<div class=\"callout-warning\">\n\n**Avvertenza:** Attenzione, c'è qualcosa di importante da considerare.\n\n</div>\n\n" },
+    "important": { "label": "Importante", "content": "<div class=\"callout-important\">\n\n**Importante:** Attenzione critica richiesta. Non ignorare questo punto.\n\n</div>\n\n" },
+    "bold": { "label": "Testo in grassetto", "content": "**testo in grassetto**" },
+    "italic": { "label": "Testo in corsivo", "content": "*testo in corsivo*" },
+    "strikethrough": { "label": "Testo barrato", "content": "~~testo barrato~~" }
+  },
+  "example": {
+    "title": "Documento di Esempio",
+    "intro": "Questo è un documento di prova per vedere tutte le capacità dell'editor.",
+    "section_text_format": "Formattazione del Testo",
+    "text_format_desc": "Puoi usare **grassetto**, *corsivo*, o ~~barrato~~ secondo le tue esigenze.",
+    "text_format_inline": "Puoi anche includere `codice inline` nel testo.",
+    "section_lists": "Liste",
+    "section_data_table": "Tabella Dati",
+    "section_code_block": "Blocco di Codice",
+    "section_quote": "Citazione",
+    "quote_text": "> \"La semplicità è la sofisticazione suprema.\"\n> \u2014 Leonardo da Vinci",
+    "section_callouts": "Callouts",
+    "footer": "Documento generato con Markdown Editor"
   }
 }

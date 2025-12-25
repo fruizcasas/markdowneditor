@@ -2,7 +2,8 @@
   "_meta": {
     "code": "de",
     "name_native": "Deutsch",
-    "name_english": "German"
+    "name_english": "German",
+    "flag": "🇩🇪"
   },
   "menu": {
     "file": "Datei",
@@ -12,6 +13,9 @@
     "help": "Hilfe",
     "new": "Neu",
     "open": "Öffnen...",
+    "recent_files": "Zuletzt verwendet",
+    "clear_recent": "Verlauf verwalten...",
+    "no_recent": "(Keine kürzlichen Dateien)",
     "save": "Speichern",
     "save_as": "Speichern unter...",
     "export_pdf": "PDF exportieren...",
@@ -48,7 +52,8 @@
     "copy_html": "HTML kopieren",
     "change_theme": "Design wechseln",
     "frozen": "Vorschau einfrieren (nicht aktualisieren)",
-    "refresh_preview": "Vorschau jetzt aktualisieren"
+    "refresh_preview": "Vorschau jetzt aktualisieren",
+    "change_language": "Sprache ändern"
   },
   "find": {
     "placeholder": "Suchen...",
@@ -91,6 +96,8 @@
     "error_open": "Konnte nicht geöffnet werden",
     "error_save": "Konnte nicht gespeichert werden",
     "error_extension": "Nur .md, .txt oder .markdown Dateien",
+    "file_not_found": "Datei nicht gefunden",
+    "file_not_found_msg": "Die Datei existiert nicht mehr:\n{filepath}\n\nAus den zuletzt verwendeten entfernen?",
     "copy_html_title": "HTML kopieren",
     "copy_html_instructions": "Gespeichert: {filename}\n\n1. Alles auswählen (Strg+A)\n2. Kopieren (Strg+C)\n3. In Outlook einfügen (Strg+V)\n\nFormatierung bleibt erhalten.",
     "wkhtmltopdf_title": "wkhtmltopdf nicht gefunden",
@@ -98,6 +105,11 @@
     "download_title": "Manueller Download erforderlich",
     "download_instructions": "Download-Seite geöffnet.\n\n1. Windows-Version (64-Bit) herunterladen\n2. Installieren oder Programm extrahieren\n3. 'wkhtmltopdf.exe' kopieren nach:\n   {path}\n\nDanach können Sie in PDF exportieren.",
     "about_title": "Über",
+    "recent_title": "Zuletzt verwendete Dateien verwalten",
+    "recent_delete_selected": "Ausgewählte löschen",
+    "recent_clear_all": "Alle löschen",
+    "recent_close": "Schließen",
+    "recent_none_selected": "Keine Elemente ausgewählt",
     "about_msg": "{app_name} v{version}\n\nStrg+N/O/S - Neu/Öffnen/Speichern\nStrg+Z/Y - Rückgängig/Wiederholen\nStrg+Mausrad - Editor-Zoom\nStrg+Mausrad auf Vorschau - Vorschau-Zoom\n.md ziehen zum Öffnen"
   },
   "style_editor": {
@@ -154,5 +166,39 @@
       "text_align": "Ausrichtung",
       "text_decoration": "Dekoration"
     }
+  },
+  "snippet": {
+    "h1": { "label": "Überschrift H1", "content": "# Haupttitel\n\n" },
+    "h2": { "label": "Überschrift H2", "content": "## Abschnitt\n\n" },
+    "h3": { "label": "Überschrift H3", "content": "### Unterabschnitt\n\n" },
+    "bullet_list": { "label": "Aufzählungsliste", "content": "- Element 1\n- Element 2\n- Element 3\n\n" },
+    "numbered_list": { "label": "Nummerierte Liste", "content": "1. Erster Schritt\n2. Zweiter Schritt\n3. Dritter Schritt\n\n" },
+    "table": { "label": "Tabelle", "content": "| Spalte 1 | Spalte 2 | Spalte 3 |\n|----------|----------|----------|\n| Daten 1  | Daten 2  | Daten 3  |\n| Daten 4  | Daten 5  | Daten 6  |\n\n" },
+    "code_block": { "label": "Codeblock", "content": "```python\n# Ihr Code hier\ndef beispiel():\n    return \"Hallo Welt\"\n```\n\n" },
+    "inline_code": { "label": "Inline-Code", "content": "`Code hier`" },
+    "quote": { "label": "Zitat", "content": "> Dies ist ein wichtiges Zitat oder eine Notiz.\n> Es kann mehrere Zeilen haben.\n\n" },
+    "link": { "label": "Link", "content": "[Linktext](https://url-hier.com)" },
+    "image": { "label": "Bild", "content": "![Alternativtext](pfad/zum/bild.png)" },
+    "separator": { "label": "Horizontale Linie", "content": "\n---\n\n" },
+    "note": { "label": "Hinweis", "content": "<div class=\"callout-note\">\n\n**Hinweis:** Zusätzliche Informationen oder nützliche Klärung.\n\n</div>\n\n" },
+    "warning": { "label": "Warnung", "content": "<div class=\"callout-warning\">\n\n**Warnung:** Vorsicht, hier ist etwas Wichtiges zu beachten.\n\n</div>\n\n" },
+    "important": { "label": "Wichtig", "content": "<div class=\"callout-important\">\n\n**Wichtig:** Kritische Aufmerksamkeit erforderlich. Diesen Punkt nicht ignorieren.\n\n</div>\n\n" },
+    "bold": { "label": "Fettgedruckter Text", "content": "**fetter Text**" },
+    "italic": { "label": "Kursiver Text", "content": "*kursiver Text*" },
+    "strikethrough": { "label": "Durchgestrichener Text", "content": "~~durchgestrichener Text~~" }
+  },
+  "example": {
+    "title": "Beispieldokument",
+    "intro": "Dies ist ein Testdokument, um alle Fähigkeiten des Editors zu sehen.",
+    "section_text_format": "Textformatierung",
+    "text_format_desc": "Sie können **fett**, *kursiv* oder ~~durchgestrichen~~ nach Bedarf verwenden.",
+    "text_format_inline": "Sie können auch `Inline-Code` im Text einfügen.",
+    "section_lists": "Listen",
+    "section_data_table": "Datentabelle",
+    "section_code_block": "Codeblock",
+    "section_quote": "Zitat",
+    "quote_text": "> \"Einfachheit ist die höchste Stufe der Vollendung.\"\n> \u2014 Leonardo da Vinci",
+    "section_callouts": "Callouts",
+    "footer": "Dokument erstellt mit Markdown Editor"
   }
 }

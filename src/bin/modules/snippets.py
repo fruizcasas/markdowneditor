@@ -11,16 +11,111 @@ Copyright (c) 2025 Fernando Ruiz Casas
 Licensed under MIT License
 """
 
+from .i18n import t
+
 # =============================================================================
-# MARKDOWN SNIPPETS FOR CONTEXT MENU
-# SNIPPETS MARKDOWN PARA MENÚ CONTEXTUAL
+# SNIPPET KEYS - Define order and separators
+# CLAVES SNIPPET - Define orden y separadores
+# =============================================================================
+
+# Order of snippets with None for separators
+# Orden de snippets con None para separadores
+SNIPPET_ORDER = [
+    "h1", "h2", "h3",
+    None,  # separator
+    "bullet_list", "numbered_list",
+    None,  # separator
+    "table", "code_block", "inline_code",
+    None,  # separator
+    "quote", "link", "image", "separator",
+    None,  # separator
+    "note", "warning", "important",
+    None,  # separator
+    "bold", "italic", "strikethrough",
+]
+
+
+def get_snippets():
+    """
+    Get translated snippets for context menu
+    Obtiene snippets traducidos para menú contextual
+    
+    Returns dict with label -> content, None for separators
+    Devuelve dict con label -> content, None para separadores
+    """
+    snippets = {}
+    sep_count = 0
+    
+    for key in SNIPPET_ORDER:
+        if key is None:
+            # Unique separator key / Clave separador única
+            sep_count += 1
+            snippets[f"---{sep_count}"] = None
+        else:
+            label = t(f"snippet.{key}.label")
+            content = t(f"snippet.{key}.content")
+            snippets[label] = content
+    
+    return snippets
+
+
+def get_example_document():
+    """
+    Generate translated example document using snippets
+    Genera documento de ejemplo traducido usando snippets
+    """
+    # Helper to get snippet content / Helper para obtener contenido de snippet
+    def s(key):
+        return t(f"snippet.{key}.content")
+    
+    # Helper to get example text / Helper para obtener texto de ejemplo  
+    def e(key):
+        return t(f"example.{key}")
+    
+    return f"""# {e('title')}
+
+{e('intro')}
+
+## {e('section_text_format')}
+
+{e('text_format_desc')}
+
+{e('text_format_inline')}
+
+## {e('section_lists')}
+
+### {t('snippet.bullet_list.label')}
+{s('bullet_list')}
+### {t('snippet.numbered_list.label')}
+{s('numbered_list')}
+## {e('section_data_table')}
+
+{s('table')}
+## {e('section_code_block')}
+
+{s('code_block')}
+## {e('section_quote')}
+
+{e('quote_text')}
+
+## {e('section_callouts')}
+
+{s('note')}{s('warning')}{s('important')}---
+
+*{e('footer')}*
+"""
+
+
+# =============================================================================
+# LEGACY FALLBACK - Used if i18n not ready
+# FALLBACK LEGACY - Usado si i18n no está listo
 # =============================================================================
 
 MARKDOWN_SNIPPETS = {
     "Encabezado H1": "# Titulo principal\n\n",
     "Encabezado H2": "## Seccion\n\n",
     "Encabezado H3": "### Subseccion\n\n",
-    "---": None,  # Menu separator / Separador de menú
+    "---": None,
     "Lista con bullets": "- Elemento 1\n- Elemento 2\n- Elemento 3\n\n",
     "Lista numerada": "1. Primer paso\n2. Segundo paso\n3. Tercer paso\n\n",
     "----": None,

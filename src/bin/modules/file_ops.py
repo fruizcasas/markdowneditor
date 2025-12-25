@@ -14,6 +14,7 @@ Licensed under MIT License
 import os
 from tkinter import filedialog, messagebox
 from .i18n import t
+from .config import add_recent_file
 
 
 class FileManager:
@@ -128,6 +129,9 @@ class FileManager:
                 self.on_file_change(filepath, content)
             if self.on_status:
                 self.on_status(f"{t('status.opened')}: {os.path.basename(filepath)}")
+            
+            # Add to recent files / Añadir a recientes
+            add_recent_file(filepath)
             return True
         except Exception as e:
             messagebox.showerror(t("dialog.error"), f"{t('dialog.error_open')}:\n{e}")
@@ -174,6 +178,9 @@ class FileManager:
                 self.on_file_change(filepath, content)
             if self.on_status:
                 self.on_status(f"{t('status.saved')}: {os.path.basename(filepath)}")
+            
+            # Add to recent files / Añadir a recientes
+            add_recent_file(filepath)
             return True
         except Exception as e:
             messagebox.showerror(t("dialog.error"), f"{t('dialog.error_save')}:\n{e}")

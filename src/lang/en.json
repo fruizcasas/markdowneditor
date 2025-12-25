@@ -2,7 +2,8 @@
   "_meta": {
     "code": "en",
     "name_native": "English",
-    "name_english": "English"
+    "name_english": "English",
+    "flag": "🇬🇧"
   },
   "menu": {
     "file": "File",
@@ -12,6 +13,9 @@
     "help": "Help",
     "new": "New",
     "open": "Open...",
+    "recent_files": "Recent Files",
+    "clear_recent": "Manage Recent...",
+    "no_recent": "(No recent files)",
     "save": "Save",
     "save_as": "Save as...",
     "export_pdf": "Export PDF...",
@@ -48,7 +52,8 @@
     "copy_html": "Copy HTML",
     "change_theme": "Change theme",
     "frozen": "Freeze preview (don't update)",
-    "refresh_preview": "Refresh preview now"
+    "refresh_preview": "Refresh preview now",
+    "change_language": "Change language"
   },
   "find": {
     "placeholder": "Find...",
@@ -91,6 +96,8 @@
     "error_open": "Could not open",
     "error_save": "Could not save",
     "error_extension": "Only .md, .txt or .markdown files",
+    "file_not_found": "File not found",
+    "file_not_found_msg": "The file no longer exists:\n{filepath}\n\nRemove from recent files?",
     "copy_html_title": "Copy HTML",
     "copy_html_instructions": "Saved: {filename}\n\n1. Select all (Ctrl+A)\n2. Copy (Ctrl+C)\n3. Paste in Outlook (Ctrl+V)\n\nFormat will be preserved.",
     "wkhtmltopdf_title": "wkhtmltopdf not found",
@@ -98,6 +105,11 @@
     "download_title": "Manual download required",
     "download_instructions": "Download page opened.\n\n1. Download Windows version (64-bit)\n2. Install or extract the executable\n3. Copy 'wkhtmltopdf.exe' to:\n   {path}\n\nThen you can export to PDF.",
     "about_title": "About",
+    "recent_title": "Manage Recent Files",
+    "recent_delete_selected": "Delete selected",
+    "recent_clear_all": "Clear all",
+    "recent_close": "Close",
+    "recent_none_selected": "No items selected",
     "about_msg": "{app_name} v{version}\n\nCtrl+N/O/S - New/Open/Save\nCtrl+Z/Y - Undo/Redo\nCtrl+Wheel - Editor zoom\nCtrl+Wheel on preview - Preview zoom\nDrag .md to open"
   },
   "style_editor": {
@@ -154,5 +166,39 @@
       "text_align": "Alignment",
       "text_decoration": "Decoration"
     }
+  },
+  "snippet": {
+    "h1": { "label": "Heading H1", "content": "# Main Title\n\n" },
+    "h2": { "label": "Heading H2", "content": "## Section\n\n" },
+    "h3": { "label": "Heading H3", "content": "### Subsection\n\n" },
+    "bullet_list": { "label": "Bullet list", "content": "- Item 1\n- Item 2\n- Item 3\n\n" },
+    "numbered_list": { "label": "Numbered list", "content": "1. First step\n2. Second step\n3. Third step\n\n" },
+    "table": { "label": "Table", "content": "| Column 1 | Column 2 | Column 3 |\n|----------|----------|----------|\n| Data 1   | Data 2   | Data 3   |\n| Data 4   | Data 5   | Data 6   |\n\n" },
+    "code_block": { "label": "Code block", "content": "```python\n# Your code here\ndef example():\n    return \"Hello world\"\n```\n\n" },
+    "inline_code": { "label": "Inline code", "content": "`code here`" },
+    "quote": { "label": "Quote", "content": "> This is an important quote or note.\n> It can have multiple lines.\n\n" },
+    "link": { "label": "Link", "content": "[Link text](https://url-here.com)" },
+    "image": { "label": "Image", "content": "![Alt text](path/to/image.png)" },
+    "separator": { "label": "Horizontal separator", "content": "\n---\n\n" },
+    "note": { "label": "Note callout", "content": "<div class=\"callout-note\">\n\n**Note:** Additional information or clarification that may be useful.\n\n</div>\n\n" },
+    "warning": { "label": "Warning callout", "content": "<div class=\"callout-warning\">\n\n**Warning:** Caution, there is something important to consider here.\n\n</div>\n\n" },
+    "important": { "label": "Important callout", "content": "<div class=\"callout-important\">\n\n**Important:** Critical attention required. Do not ignore this point.\n\n</div>\n\n" },
+    "bold": { "label": "Bold text", "content": "**bold text**" },
+    "italic": { "label": "Italic text", "content": "*italic text*" },
+    "strikethrough": { "label": "Strikethrough text", "content": "~~strikethrough text~~" }
+  },
+  "example": {
+    "title": "Example Document",
+    "intro": "This is a test document to see all the editor's capabilities.",
+    "section_text_format": "Text Formatting",
+    "text_format_desc": "You can use **bold**, *italic*, or ~~strikethrough~~ as needed.",
+    "text_format_inline": "You can also include `inline code` within text.",
+    "section_lists": "Lists",
+    "section_data_table": "Data Table",
+    "section_code_block": "Code Block",
+    "section_quote": "Quote",
+    "quote_text": "> \"Simplicity is the ultimate sophistication.\"\n> \u2014 Leonardo da Vinci",
+    "section_callouts": "Callouts",
+    "footer": "Document generated with Markdown Editor"
   }
 }

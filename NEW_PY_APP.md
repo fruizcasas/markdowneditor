@@ -562,6 +562,58 @@ AppName/
 
 ---
 
+## When Something Fails / Cuando Algo Falla
+
+You don't need to understand the error. Just tell Claude what happened.  
+No necesitas entender el error. Solo dile a Claude qué pasó.
+
+### The app doesn't open / La app no abre
+
+Tell Claude / Dile a Claude:
+
+> "I double-clicked AppName.bat and nothing happened"  
+> "Hice doble click en AppName.bat y no pasó nada"
+
+Or if a black window flashes and closes / O si una ventana negra aparece y se cierra:
+
+> "A black window appeared for 1 second and closed"  
+> "Apareció una ventana negra 1 segundo y se cerró"
+
+### Red or yellow text appears / Aparece texto rojo o amarillo
+
+Copy ALL the text from the black window and paste it to Claude.  
+Copia TODO el texto de la ventana negra y pégalo a Claude:
+
+> "This error appeared:"  
+> "Me salió este error:"
+> ```
+> [paste everything here / pega todo aquí]
+> ```
+
+**TIP**: Right-click on black window → "Select All" → Enter → Then paste  
+**TRUCO**: Click derecho en ventana negra → "Seleccionar todo" → Enter → Luego pegar
+
+### It opens but doesn't do what I want / Abre pero no hace lo que quiero
+
+Describe WHAT it does vs WHAT you expected:  
+Describe QUÉ hace vs QUÉ esperabas:
+
+> "When I click the button, it shows 'Done' but the file is empty"  
+> "Cuando pulso el botón, dice 'Listo' pero el archivo está vacío"
+
+> "It processes the file but ignores the rows that have..."  
+> "Procesa el archivo pero ignora las filas que tienen..."
+
+### It worked before, now it doesn't / Funcionaba antes, ahora no
+
+> "Yesterday it worked fine. Today I get this error: [paste]"  
+> "Ayer funcionaba bien. Hoy me sale este error: [pegar]"
+
+> "It stopped working after I updated Windows / installed X"  
+> "Dejó de funcionar después de actualizar Windows / instalar X"
+
+---
+
 ## Golden Rules / Reglas de Oro
 
 1. **config.py FIRST** - Defines everything others use / Define todo lo que usan los demás

@@ -2,7 +2,8 @@
   "_meta": {
     "code": "zh",
     "name_native": "中文",
-    "name_english": "Chinese"
+    "name_english": "Chinese",
+    "flag": "🇨🇳"
   },
   "menu": {
     "file": "文件",
@@ -12,6 +13,9 @@
     "help": "帮助",
     "new": "新建",
     "open": "打开...",
+    "recent_files": "最近文件",
+    "clear_recent": "管理记录...",
+    "no_recent": "（没有最近文件）",
     "save": "保存",
     "save_as": "另存为...",
     "export_pdf": "导出PDF...",
@@ -48,7 +52,8 @@
     "copy_html": "复制HTML",
     "change_theme": "切换主题",
     "frozen": "冻结预览（不更新）",
-    "refresh_preview": "立即刷新预览"
+    "refresh_preview": "立即刷新预览",
+    "change_language": "切换语言"
   },
   "find": {
     "placeholder": "查找...",
@@ -91,6 +96,8 @@
     "error_open": "无法打开",
     "error_save": "无法保存",
     "error_extension": "仅支持 .md、.txt 或 .markdown 文件",
+    "file_not_found": "文件未找到",
+    "file_not_found_msg": "文件已不存在：\n{filepath}\n\n从最近文件中移除？",
     "copy_html_title": "复制HTML",
     "copy_html_instructions": "已保存：{filename}\n\n1. 全选 (Ctrl+A)\n2. 复制 (Ctrl+C)\n3. 粘贴到Outlook (Ctrl+V)\n\n格式将被保留。",
     "wkhtmltopdf_title": "未找到wkhtmltopdf",
@@ -98,6 +105,11 @@
     "download_title": "需要手动下载",
     "download_instructions": "下载页面已打开。\n\n1. 下载Windows版本（64位）\n2. 安装或解压可执行文件\n3. 将'wkhtmltopdf.exe'复制到：\n   {path}\n\n之后即可导出PDF。",
     "about_title": "关于",
+    "recent_title": "管理最近文件",
+    "recent_delete_selected": "删除所选",
+    "recent_clear_all": "清除全部",
+    "recent_close": "关闭",
+    "recent_none_selected": "未选择任何项目",
     "about_msg": "{app_name} v{version}\n\nCtrl+N/O/S - 新建/打开/保存\nCtrl+Z/Y - 撤销/重做\nCtrl+滚轮 - 编辑器缩放\n预览区Ctrl+滚轮 - 预览缩放\n拖拽.md文件打开"
   },
   "style_editor": {
@@ -154,5 +166,39 @@
       "text_align": "对齐",
       "text_decoration": "装饰"
     }
+  },
+  "snippet": {
+    "h1": { "label": "标题 H1", "content": "# 主标题\n\n" },
+    "h2": { "label": "标题 H2", "content": "## 章节\n\n" },
+    "h3": { "label": "标题 H3", "content": "### 子章节\n\n" },
+    "bullet_list": { "label": "无序列表", "content": "- 项目 1\n- 项目 2\n- 项目 3\n\n" },
+    "numbered_list": { "label": "有序列表", "content": "1. 第一步\n2. 第二步\n3. 第三步\n\n" },
+    "table": { "label": "表格", "content": "| 列 1 | 列 2 | 列 3 |\n|------|------|------|\n| 数据 1 | 数据 2 | 数据 3 |\n| 数据 4 | 数据 5 | 数据 6 |\n\n" },
+    "code_block": { "label": "代码块", "content": "```python\n# 在此处输入代码\ndef 示例():\n    return \"你好世界\"\n```\n\n" },
+    "inline_code": { "label": "行内代码", "content": "`代码`" },
+    "quote": { "label": "引用", "content": "> 这是一条重要的引用或备注。\n> 可以有多行。\n\n" },
+    "link": { "label": "链接", "content": "[链接文本](https://url-here.com)" },
+    "image": { "label": "图片", "content": "![替代文本](图片路径/image.png)" },
+    "separator": { "label": "水平分割线", "content": "\n---\n\n" },
+    "note": { "label": "提示", "content": "<div class=\"callout-note\">\n\n**提示：** 可能有用的额外信息或说明。\n\n</div>\n\n" },
+    "warning": { "label": "警告", "content": "<div class=\"callout-warning\">\n\n**警告：** 注意，这里有重要事项需要考虑。\n\n</div>\n\n" },
+    "important": { "label": "重要", "content": "<div class=\"callout-important\">\n\n**重要：** 需要特别关注。请勿忽视此点。\n\n</div>\n\n" },
+    "bold": { "label": "粗体文本", "content": "**粗体文本**" },
+    "italic": { "label": "斜体文本", "content": "*斜体文本*" },
+    "strikethrough": { "label": "删除线文本", "content": "~~删除线文本~~" }
+  },
+  "example": {
+    "title": "示例文档",
+    "intro": "这是一个测试文档，用于展示编辑器的所有功能。",
+    "section_text_format": "文本格式",
+    "text_format_desc": "您可以根据需要使用**粗体**、*斜体*或~~删除线~~。",
+    "text_format_inline": "您还可以在文本中包含`行内代码`。",
+    "section_lists": "列表",
+    "section_data_table": "数据表格",
+    "section_code_block": "代码块",
+    "section_quote": "引用",
+    "quote_text": "> \"简单是终极的复杂。\"\n> \u2014 达·芬奇",
+    "section_callouts": "Callouts",
+    "footer": "文档由 Markdown Editor 生成"
   }
 }

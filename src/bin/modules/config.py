@@ -152,3 +152,82 @@ def update_ui_config(**kwargs):
         if key in config:
             config[key] = value
     save_ui_config(config)
+
+
+# =============================================================================
+# RECENT FILES - Load / Save
+# =============================================================================
+
+MAX_RECENT_FILES = 10
+
+def get_recent_files():
+    """
+    Get list of recent files from config
+    Obtiene lista de ficheros recientes desde config
+    
+    Returns:
+        list: List of file paths (most recent first)
+    """
+    full_config = _load_full_config()
+    return full_config.get("recent_files", [])
+
+
+def add_recent_file(filepath):
+    """
+    Add a file to recent files list
+    Añade un fichero a la lista de recientes
+    
+    Args:
+        filepath: Full path to the file
+    """
+    if not filepath:
+        return
+    
+    # Normalize path / Normalizar ruta
+    filepath = os.path.normpath(filepath)
+    
+    full_config = _load_full_config()
+    recent = full_config.get("recent_files", [])
+    
+    # Remove if already exists (will re-add at top)
+    # Quitar si ya existe (se re-añadirá arriba)
+    if filepath in recent:
+        recent.remove(filepath)
+    
+    # Add at beginning / Añadir al principio
+    recent.insert(0, filepath)
+    
+    # Keep only MAX / Mantener solo MAX
+    recent = recent[:MAX_RECENT_FILES]
+    
+    full_config["recent_files"] = recent
+    _save_full_config(full_config)
+
+
+def remove_recent_file(filepath):
+    """
+    Remove a file from recent files list
+    Elimina un fichero de la lista de recientes
+    
+    Args:
+        filepath: Full path to the file
+    """
+    filepath = os.path.normpath(filepath)
+    
+    full_config = _load_full_config()
+    recent = full_config.get("recent_files", [])
+    
+    if filepath in recent:
+        recent.remove(filepath)
+        full_config["recent_files"] = recent
+        _save_full_config(full_config)
+
+
+def clear_recent_files():
+    """
+    Clear all recent files
+    Limpia todos los ficheros recientes
+    """
+    full_config = _load_full_config()
+    full_config["recent_files"] = []
+    _save_full_config(full_config)

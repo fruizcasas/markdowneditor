@@ -1,10 +1,15 @@
 {
-  "language": "fr",
+  "language": "en",
   "ui": {
     "editor_font_size": 18,
-    "preview_font_size": 22,
-    "preview_frozen": true,
+    "preview_font_size": 28,
+    "preview_frozen": false,
     "editor_collapsed": false,
     "preview_collapsed": false
-  }
+  },
+  "recent_files": [
+    "F:\\NEW_PY_APP.md",
+    "F:\\noname.md",
+    "F:\\Validacion con clearsky.md"
+  ]
 }

@@ -65,7 +65,8 @@ def _load_available_languages():
                 _available_languages[lang_code] = {
                     "code": lang_code,
                     "name_native": data["_meta"].get("name_native", lang_code),
-                    "name_english": data["_meta"].get("name_english", lang_code)
+                    "name_english": data["_meta"].get("name_english", lang_code),
+                    "flag": data["_meta"].get("flag", "🏳️")
                 }
 
 
@@ -95,6 +96,37 @@ def get_language_display_list():
     for code, info in sorted(langs.items(), key=lambda x: x[1]["name_english"]):
         display = f"{info['name_native']} / {info['name_english']}"
         result.append((code, display))
+    return result
+
+
+def get_current_flag():
+    """
+    Get flag emoji for current language
+    Obtiene emoji de bandera del idioma actual
+    
+    Returns:
+        str: Flag emoji (e.g. "🇪🇸")
+    """
+    langs = get_available_languages()
+    if _current_lang in langs:
+        return langs[_current_lang].get("flag", "🏳️")
+    return "🏳️"
+
+
+def get_language_flag_list():
+    """
+    Get list for language dropdown with flags
+    Obtiene lista para dropdown con banderas
+    
+    Returns:
+        list: [(code, flag, "Native / English"), ...]
+    """
+    langs = get_available_languages()
+    result = []
+    for code, info in sorted(langs.items(), key=lambda x: x[1]["name_english"]):
+        flag = info.get("flag", "🏳️")
+        display = f"{info['name_native']} / {info['name_english']}"
+        result.append((code, flag, display))
     return result
 
 
