@@ -3,7 +3,7 @@
 **Author/Autor:** Fernando Ruiz Casas (fruizcasas@gmail.com)  
 **Assistant/Asistente:** Claude (Anthropic Opus 4.5)  
 **Date/Fecha:** December 2025 / Diciembre 2025  
-**Version/Versión:** 1.2.0  
+**Version/Versión:** 1.3.0  
 **License/Licencia:** MIT
 
 ---
@@ -19,6 +19,7 @@ Un editor Markdown con vista previa en vivo, interfaz multi-idioma, estilos CSS 
 
 - **Live preview** with CSS styles / **Vista previa en vivo** con estilos CSS
 - **Multi-language UI** (EN/ES/FR/DE/IT/PT/ZH) / **Interfaz multi-idioma**
+- **Recent files** manager / **Gestión de archivos recientes**
 - **Find and Replace** (Ctrl+F / Ctrl+H) / **Buscar y Reemplazar**
 - **Style profiles** with visual CSS editor / **Perfiles de estilo** con editor CSS visual
 - **PDF export** (requires wkhtmltopdf) / **Exportación PDF** (requiere wkhtmltopdf)
@@ -28,6 +29,7 @@ Un editor Markdown con vista previa en vivo, interfaz multi-idioma, estilos CSS 
 - **Zoom controls** for editor and preview / **Controles de zoom** para editor y preview
 - **Dark/Light theme** toggle / Alternar **tema oscuro/claro**
 - **Context menu** with Markdown snippets / **Menú contextual** con snippets Markdown
+- **Collapsible panels** (editor/preview fullscreen) / **Paneles colapsables**
 
 ---
 
@@ -74,20 +76,24 @@ MarkDownEditor/
 
 | File / Archivo | Responsibility / Responsabilidad |
 |----------------|----------------------------------|
-| main.py | Entry point / Punto de entrada |
-| config.py | Paths, version, UI config / Rutas, versión, config UI |
-| i18n.py | Internationalization / Internacionalización |
-| icons.py | Emoji icons / Iconos emoji |
-| snippets.py | Snippets and example document / Snippets y documento ejemplo |
-| styles.py | Load/save style profiles / Carga/guarda perfiles de estilo |
-| style_editor.py | Visual CSS editor window / Ventana editor CSS visual |
-| renderer.py | Convert Markdown to HTML / Convierte Markdown a HTML |
-| exporter.py | Export PDF and HTML / Exporta PDF y HTML |
-| file_ops.py | File operations, dirty flag / Operaciones archivo, flag cambios |
-| find_replace.py | Find and replace bar / Barra buscar y reemplazar |
-| dnd_support.py | Drag & Drop support / Soporte arrastrar y soltar |
-| zoom.py | Zoom for editor and preview / Zoom para editor y preview |
-| app.py | Main class with all UI / Clase principal con toda la UI |
+| `main.py` | Entry point / Punto de entrada |
+| `app.py` | Main window orchestration / Orquestación ventana principal |
+| `config.py` | Paths, version, UI config, recent files / Rutas, versión, config UI, recientes |
+| `menu.py` | Menu bar creation / Creación barra de menú |
+| `toolbar.py` | Toolbar creation / Creación barra de herramientas |
+| `i18n.py` | Internationalization / Internacionalización |
+| `icons.py` | Emoji icons / Iconos emoji |
+| `tooltips.py` | Tooltip manager / Gestor de tooltips |
+| `snippets.py` | Snippets and example document / Snippets y documento ejemplo |
+| `styles.py` | Load/save style profiles / Carga/guarda perfiles de estilo |
+| `style_editor.py` | Visual CSS editor window / Ventana editor CSS visual |
+| `renderer.py` | Convert Markdown to HTML / Convierte Markdown a HTML |
+| `exporter.py` | Export PDF and HTML / Exporta PDF y HTML |
+| `file_ops.py` | File operations, dirty flag / Operaciones archivo, flag cambios |
+| `find_replace.py` | Find and replace bar / Barra buscar y reemplazar |
+| `recent_manager.py` | Recent files dialog / Diálogo archivos recientes |
+| `dnd_support.py` | Drag & Drop support / Soporte arrastrar y soltar |
+| `zoom.py` | Zoom for editor and preview / Zoom para editor y preview |
 
 ---
 
