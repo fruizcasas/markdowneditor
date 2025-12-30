@@ -28,7 +28,20 @@ const i18n = {
         "example.section.code": "Bloque de Codigo",
         "example.section.quote": "Cita",
         "example.section.callouts": "Callouts",
-        "example.footer": "Documento generado con Markdown Editor"
+        "example.footer": "Documento generado con Markdown Editor",
+        "menu.file": "Archivo",
+        "menu.new": "Nuevo",
+        "menu.open": "Abrir",
+        "menu.save": "Guardar",
+        "menu.share": "Compartir",
+        "menu.copyhtml": "Copiar HTML",
+        "menu.help": "Ayuda",
+        "menu.about": "Acerca de",
+        "about.title": "Acerca de",
+        "about.role": "Desarrollador",
+        "about.teammate": "Teammate",
+        "about.tech": "Tecnologia",
+        "about.offline": "Funciona 100% offline"
     },
     en: {
         "panel.editor": "Markdown Editor",
@@ -58,7 +71,20 @@ const i18n = {
         "example.section.code": "Code Block",
         "example.section.quote": "Quote",
         "example.section.callouts": "Callouts",
-        "example.footer": "Document generated with Markdown Editor"
+        "example.footer": "Document generated with Markdown Editor",
+        "menu.file": "File",
+        "menu.new": "New",
+        "menu.open": "Open",
+        "menu.save": "Save",
+        "menu.share": "Share",
+        "menu.copyhtml": "Copy HTML",
+        "menu.help": "Help",
+        "menu.about": "About",
+        "about.title": "About",
+        "about.role": "Developer",
+        "about.teammate": "Teammate",
+        "about.tech": "Technology",
+        "about.offline": "Works 100% offline"
     }
 };
 
