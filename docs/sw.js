@@ -1,7 +1,7 @@
 // Service Worker - Markdown Editor PWA
 // Auto-update on new GitHub Pages deployment
 
-const CACHE_VERSION = 'v1.5.0';
+const CACHE_VERSION = 'v1.6.0';
 const CACHE_NAME = `md-editor-${CACHE_VERSION}`;
 
 const ASSETS = [
@@ -21,7 +21,8 @@ const ASSETS = [
     './js/actions.js',
     './js/sw-manager.js',
     './js/app.js',
-    'https://cdn.jsdelivr.net/npm/marked/marked.min.js'
+    'https://cdn.jsdelivr.net/npm/marked/marked.min.js',
+    'https://cdn.jsdelivr.net/npm/mammoth/mammoth.browser.min.js'
 ];
 
 // Install - cache assets

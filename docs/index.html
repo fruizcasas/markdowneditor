@@ -354,6 +354,7 @@
                     <div class="dropdown-header" data-i18n="menu.file">Archivo</div>
                     <div class="dropdown-item" onclick="newDoc()">📄 <span data-i18n="menu.new">Nuevo</span></div>
                     <div class="dropdown-item" onclick="openFile()">📂 <span data-i18n="menu.open">Abrir</span></div>
+                    <div class="dropdown-item" onclick="importWord()">📥 <span data-i18n="menu.importword">Importar Word</span></div>
                     <div class="dropdown-item" onclick="saveFile()">💾 <span data-i18n="menu.save">Guardar</span></div>
                     <div class="dropdown-item" onclick="shareContent()">📤 <span data-i18n="menu.share">Compartir</span></div>
                     <div class="dropdown-item" onclick="copyHtml()">📋 <span data-i18n="menu.copyhtml">Copiar HTML</span></div>
@@ -418,6 +419,7 @@
 
     <div class="toast" id="toast"></div>
     <input type="file" id="fileInput" accept=".md,.txt,.markdown" style="display:none">
+    <input type="file" id="wordInput" accept=".docx" style="display:none">
 
     <!-- About Modal -->
     <div class="modal-overlay" id="aboutModal" onclick="if(event.target===this)closeAbout()">
@@ -459,8 +461,9 @@
         </div>
     </div>
 
-    <!-- External library -->
+    <!-- External libraries -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mammoth/mammoth.browser.min.js"></script>
 
     <!-- App modules (order matters) -->
     <script src="js/config.js"></script>

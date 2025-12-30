@@ -60,3 +60,34 @@ function copyHtml() {
     copyToClipboard(fullHtml);
     showToast(t('status.copied'));
 }
+
+function importWord() {
+    document.getElementById('wordInput').click();
+}
+
+function handleWordImport(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+        const arrayBuffer = event.target.result;
+        mammoth.convertToMarkdown({ arrayBuffer: arrayBuffer })
+            .then(result => {
+                editor.value = result.value;
+                updatePreview();
+                updateCharCount();
+                autoSave();
+                showToast(t('status.wordimported') + ': ' + file.name);
+                if (result.messages.length > 0) {
+                    console.log('Mammoth warnings:', result.messages);
+                }
+            })
+            .catch(err => {
+                console.error('Error converting Word:', err);
+                showToast(t('status.worderror'));
+            });
+    };
+    reader.readAsArrayBuffer(file);
+    e.target.value = '';
+}

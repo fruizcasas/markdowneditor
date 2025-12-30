@@ -30,8 +30,9 @@ function initEditor() {
     // Divider drag (desktop)
     initDivider();
 
-    // File input
+    // File inputs
     document.getElementById('fileInput').addEventListener('change', handleFileOpen);
+    document.getElementById('wordInput').addEventListener('change', handleWordImport);
 
     // Show both panels on desktop
     if (window.innerWidth > 768) {
