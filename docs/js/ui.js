@@ -305,8 +305,21 @@ function updateKeyboardBarPosition() {
         // Position bar at bottom of visual viewport (just above keyboard)
         const vp = window.visualViewport;
         const barHeight = bar.offsetHeight || 44;
-        bar.style.top = (vp.offsetTop + vp.height - barHeight) + 'px';
-        bar.style.bottom = 'auto';
+
+        // In PWA standalone mode, use simpler calculation
+        const isPWA = window.matchMedia('(display-mode: standalone)').matches ||
+                      window.navigator.standalone === true;
+
+        if (isPWA) {
+            // PWA: position from bottom using viewport height difference
+            const keyboardHeight = window.innerHeight - vp.height;
+            bar.style.bottom = Math.max(0, keyboardHeight) + 'px';
+            bar.style.top = 'auto';
+        } else {
+            // Browser: use top positioning
+            bar.style.top = (vp.offsetTop + vp.height - barHeight) + 'px';
+            bar.style.bottom = 'auto';
+        }
     }
 }
 
@@ -315,7 +328,9 @@ function showKeyboardBar() {
     if (window.innerWidth <= 768) {
         const bar = document.getElementById('keyboardBar');
         bar.classList.add('show');
-        updateKeyboardBarPosition();
+        // Small delay to let keyboard fully appear
+        setTimeout(updateKeyboardBarPosition, 100);
+        setTimeout(updateKeyboardBarPosition, 300);
     }
 }
 
@@ -369,6 +384,7 @@ function initKeyboardBar() {
 
 let editorExpanded = true;
 let previewExpanded = true;
+let lastWidth = window.innerWidth;
 
 function togglePanel(panel) {
     const editorPanel = document.getElementById('editorPanel');
@@ -416,6 +432,61 @@ function togglePanel(panel) {
         }
     }
 }
+
+// Reset panel states when switching between mobile/desktop modes
+function resetPanelStates() {
+    const editorPanel = document.getElementById('editorPanel');
+    const previewPanel = document.getElementById('previewPanel');
+    const divider = document.getElementById('divider');
+    const editorBtn = editorPanel.querySelector('.panel-collapse-btn');
+    const previewBtn = previewPanel.querySelector('.panel-collapse-btn');
+
+    // Remove hidden class from both panels
+    editorPanel.classList.remove('hidden');
+    previewPanel.classList.remove('hidden');
+    divider.classList.remove('hidden');
+
+    // Reset flex styles
+    editorPanel.style.flex = '';
+    previewPanel.style.flex = '';
+
+    // Reset state
+    editorExpanded = true;
+    previewExpanded = true;
+
+    // Reset button icons
+    if (editorBtn) editorBtn.textContent = '▶';
+    if (previewBtn) previewBtn.textContent = '◀';
+
+    // In mobile mode, show only editor tab by default
+    if (window.innerWidth <= 768) {
+        editorPanel.classList.add('active');
+        previewPanel.classList.remove('active');
+        // Update tabs
+        document.querySelectorAll('.tab').forEach((tab, i) => {
+            tab.classList.toggle('active', i === 0);
+        });
+    } else {
+        // Desktop: both panels active
+        editorPanel.classList.add('active');
+        previewPanel.classList.add('active');
+    }
+
+    updatePreview();
+}
+
+// Listen for resize to handle orientation changes
+window.addEventListener('resize', () => {
+    const currentWidth = window.innerWidth;
+    const crossedThreshold = (lastWidth <= 768 && currentWidth > 768) ||
+                             (lastWidth > 768 && currentWidth <= 768);
+
+    if (crossedThreshold) {
+        resetPanelStates();
+    }
+
+    lastWidth = currentWidth;
+});
 
 // ========== DIVIDER DRAG ==========
 
