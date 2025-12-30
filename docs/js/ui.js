@@ -280,9 +280,38 @@ function showPanel(panel) {
 
 function toggleTheme() {
     document.body.classList.toggle('light-theme');
-    const isLight = document.body.classList.contains('light-theme');
-    document.getElementById('themeBtn').textContent = isLight ? '☀️' : '🌙';
+    updateThemeMenuText();
     autoSave();
+}
+
+function toggleThemeFromMenu() {
+    toggleTheme();
+    closeAllDropdowns();
+}
+
+function updateThemeMenuText() {
+    const isLight = document.body.classList.contains('light-theme');
+    const icon = document.getElementById('themeMenuIcon');
+    const text = document.getElementById('themeMenuText');
+    if (icon) icon.textContent = isLight ? '☀️' : '🌙';
+    if (text) text.textContent = isLight ? t('menu.themelight') : t('menu.themedark');
+}
+
+function changeLangFromMenu() {
+    const select = document.getElementById('langSelectMenu');
+    currentLang = select.value;
+    localStorage.setItem('md_lang', currentLang);
+    updateTexts();
+    updateThemeMenuText();
+    closeAllDropdowns();
+}
+
+function initMenuLang() {
+    const select = document.getElementById('langSelectMenu');
+    if (select) {
+        select.value = currentLang;
+    }
+    updateThemeMenuText();
 }
 
 function copyToClipboard(text) {

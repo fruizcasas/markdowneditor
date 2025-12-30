@@ -8,6 +8,7 @@ function init() {
     initDivider();
     initScrollSync();
     initPinchZoom();
+    initMenuLang();
     registerSW();
     handleUrlParams();
 }
