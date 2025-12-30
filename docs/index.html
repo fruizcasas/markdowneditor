@@ -154,31 +154,10 @@
             cursor: pointer;
             min-height: 44px;
         }
-        /* Scroll sync toggle */
-        .sync-toggle {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: var(--bg-tertiary);
-            padding: 8px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            min-height: 44px;
-            font-size: 18px;
-            transition: all 0.2s;
-        }
-        .sync-toggle:hover { background: var(--accent); }
-        .sync-toggle input { display: none; }
-        .sync-toggle span { opacity: 0.5; transition: opacity 0.2s; }
-        .sync-toggle input:checked + span { opacity: 1; }
         /* Main content */
         .main { display: flex; flex: 1; overflow: hidden; min-height: 0; }
-        .panel { flex: 1; display: flex; flex-direction: column; min-width: 0; transition: flex 0.3s; }
-        .panel.collapsed { flex: 0 0 40px; min-width: 40px; overflow: hidden; }
-        .panel.collapsed .editor-container,
-        .panel.collapsed .preview-container { display: none; }
-        .panel.collapsed .panel-header { writing-mode: vertical-rl; text-orientation: mixed; height: 100%; padding: 12px 8px; }
-        .panel.collapsed .panel-header-right { flex-direction: column; }
+        .panel { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+        .panel.hidden { display: none !important; }
         .panel-header-right { display: flex; align-items: center; gap: 8px; }
         .panel-collapse-btn {
             background: var(--bg-tertiary);
@@ -194,6 +173,33 @@
             justify-content: center;
         }
         .panel-collapse-btn:hover { background: var(--accent); }
+        .sync-toggle-mini {
+            display: flex;
+            align-items: center;
+            background: var(--bg-tertiary);
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .sync-toggle-mini:hover { background: var(--accent); }
+        .sync-toggle-mini input { display: none; }
+        .sync-toggle-mini span { opacity: 0.5; }
+        .sync-toggle-mini input:checked + span { opacity: 1; }
+        .panel-sync-btn {
+            background: var(--bg-tertiary);
+            border: none;
+            color: var(--text-primary);
+            width: 24px;
+            height: 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .panel-sync-btn:hover { background: var(--accent); }
         .panel-header {
             background: var(--bg-secondary);
             padding: 8px 12px;
@@ -493,14 +499,6 @@
             <select id="styleSelect" onchange="changeStyle()"></select>
             <button class="btn btn-icon" onclick="showStyleEditor()" title="Editor de estilos">🎨</button>
         </div>
-        <div class="toolbar-separator hide-mobile"></div>
-        <div class="toolbar-group hide-mobile">
-            <label class="sync-toggle" title="Scroll sincronizado">
-                <input type="checkbox" id="scrollSyncCheckbox" checked onchange="toggleScrollSync()">
-                <span>🔗</span>
-            </label>
-            <button class="btn btn-icon" onclick="manualScrollSync()" title="Sincronizar ahora">⟳</button>
-        </div>
         <div class="toolbar-group" style="margin-left: auto;">
             <select id="langSelect" onchange="changeLang()">
                 <option value="es">🇪🇸 ES</option>
@@ -521,7 +519,7 @@
                 <span data-i18n="panel.editor">Editor Markdown</span>
                 <div class="panel-header-right">
                     <span class="saved-indicator" id="savedIndicator"></span>
-                    <button class="panel-collapse-btn hide-mobile" onclick="togglePanel('editor')" title="Colapsar">◀</button>
+                    <button class="panel-collapse-btn hide-mobile" onclick="togglePanel('preview')" title="Ocultar/Mostrar Preview">▶</button>
                 </div>
             </div>
             <div class="editor-container">
@@ -531,8 +529,15 @@
         <div class="divider hide-mobile" id="divider"></div>
         <div class="panel" id="previewPanel">
             <div class="panel-header">
-                <button class="panel-collapse-btn hide-mobile" onclick="togglePanel('preview')" title="Colapsar">▶</button>
+                <button class="panel-collapse-btn hide-mobile" onclick="togglePanel('editor')" title="Ocultar/Mostrar Editor">◀</button>
                 <span data-i18n="panel.preview">Vista previa</span>
+                <div class="panel-header-right hide-mobile">
+                    <label class="sync-toggle-mini" title="Scroll sincronizado">
+                        <input type="checkbox" id="scrollSyncCheckbox" checked onchange="toggleScrollSync()">
+                        <span>🔗</span>
+                    </label>
+                    <button class="panel-sync-btn" onclick="manualScrollSync()" title="Sincronizar ahora">⟳</button>
+                </div>
             </div>
             <div class="preview-container">
                 <iframe id="preview"></iframe>
