@@ -27,9 +27,6 @@ function initEditor() {
         updateCharCount();
     });
 
-    // Divider drag (desktop)
-    initDivider();
-
     // File inputs
     document.getElementById('fileInput').addEventListener('change', handleFileOpen);
     document.getElementById('wordInput').addEventListener('change', handleWordImport);
@@ -38,24 +35,6 @@ function initEditor() {
     if (window.innerWidth > 768) {
         document.getElementById('previewPanel').classList.add('active');
     }
-}
-
-function initDivider() {
-    const divider = document.getElementById('divider');
-    let isDragging = false;
-
-    divider.addEventListener('mousedown', () => isDragging = true);
-
-    document.addEventListener('mousemove', (e) => {
-        if (!isDragging) return;
-        const container = document.querySelector('.main');
-        const rect = container.getBoundingClientRect();
-        const percent = ((e.clientX - rect.left) / rect.width) * 100;
-        document.getElementById('editorPanel').style.flex = `0 0 ${percent}%`;
-        document.getElementById('previewPanel').style.flex = `0 0 ${100 - percent}%`;
-    });
-
-    document.addEventListener('mouseup', () => isDragging = false);
 }
 
 function updatePreview() {
