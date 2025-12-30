@@ -1,5 +1,5 @@
 // ========== CONFIGURATION ==========
-const APP_VERSION = '2.6.0';
+const APP_VERSION = '2.6.1';
 
 // Storage keys
 const STORAGE_KEY = 'md_editor_content';
