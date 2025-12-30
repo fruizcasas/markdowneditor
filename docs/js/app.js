@@ -4,6 +4,7 @@
 function init() {
     initEditor();
     initKeyboardBar();
+    initDivider();
     registerSW();
     handleUrlParams();
 }

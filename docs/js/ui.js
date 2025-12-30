@@ -188,3 +188,79 @@ function initKeyboardBar() {
         window.visualViewport.addEventListener('scroll', updateKeyboardBarPosition);
     }
 }
+
+// ========== PANEL COLLAPSE/EXPAND ==========
+
+function togglePanel(panel) {
+    const panelEl = document.getElementById(panel + 'Panel');
+    const btn = panelEl.querySelector('.panel-collapse-btn');
+
+    panelEl.classList.toggle('collapsed');
+
+    // Update button arrow direction
+    if (panel === 'editor') {
+        btn.textContent = panelEl.classList.contains('collapsed') ? '▶' : '◀';
+    } else {
+        btn.textContent = panelEl.classList.contains('collapsed') ? '◀' : '▶';
+    }
+
+    // If preview was collapsed and now expanded, update it
+    if (panel === 'preview' && !panelEl.classList.contains('collapsed')) {
+        updatePreview();
+    }
+}
+
+// ========== DIVIDER DRAG ==========
+
+function initDivider() {
+    const divider = document.getElementById('divider');
+    const main = document.querySelector('.main');
+    const editorPanel = document.getElementById('editorPanel');
+    const previewPanel = document.getElementById('previewPanel');
+
+    let isDragging = false;
+
+    divider.addEventListener('mousedown', startDrag);
+    divider.addEventListener('touchstart', startDrag, { passive: false });
+
+    function startDrag(e) {
+        if (window.innerWidth <= 768) return; // No drag on mobile
+        isDragging = true;
+        divider.classList.add('dragging');
+        document.body.style.cursor = 'col-resize';
+        document.body.style.userSelect = 'none';
+
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('touchmove', drag, { passive: false });
+        document.addEventListener('mouseup', stopDrag);
+        document.addEventListener('touchend', stopDrag);
+
+        e.preventDefault();
+    }
+
+    function drag(e) {
+        if (!isDragging) return;
+
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const mainRect = main.getBoundingClientRect();
+        const percent = ((clientX - mainRect.left) / mainRect.width) * 100;
+
+        // Limit between 20% and 80%
+        const clampedPercent = Math.max(20, Math.min(80, percent));
+
+        editorPanel.style.flex = `0 0 ${clampedPercent}%`;
+        previewPanel.style.flex = `0 0 ${100 - clampedPercent}%`;
+    }
+
+    function stopDrag() {
+        isDragging = false;
+        divider.classList.remove('dragging');
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+
+        document.removeEventListener('mousemove', drag);
+        document.removeEventListener('touchmove', drag);
+        document.removeEventListener('mouseup', stopDrag);
+        document.removeEventListener('touchend', stopDrag);
+    }
+}
