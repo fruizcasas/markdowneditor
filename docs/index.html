@@ -173,12 +173,8 @@
         .sync-toggle input:checked + span { opacity: 1; }
         /* Main content */
         .main { display: flex; flex: 1; overflow: hidden; min-height: 0; }
-        .panel { flex: 1; display: flex; flex-direction: column; min-width: 0; transition: flex 0.3s; }
-        .panel.collapsed { flex: 0 0 40px; min-width: 40px; overflow: hidden; }
-        .panel.collapsed .editor-container,
-        .panel.collapsed .preview-container { display: none; }
-        .panel.collapsed .panel-header { writing-mode: vertical-rl; text-orientation: mixed; height: 100%; padding: 12px 8px; }
-        .panel.collapsed .panel-header-right { flex-direction: column; }
+        .panel { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+        .panel.hidden { display: none !important; }
         .panel-header-right { display: flex; align-items: center; gap: 8px; }
         .panel-collapse-btn {
             background: var(--bg-tertiary);
@@ -521,7 +517,7 @@
                 <span data-i18n="panel.editor">Editor Markdown</span>
                 <div class="panel-header-right">
                     <span class="saved-indicator" id="savedIndicator"></span>
-                    <button class="panel-collapse-btn hide-mobile" onclick="togglePanel('editor')" title="Colapsar">◀</button>
+                    <button class="panel-collapse-btn hide-mobile" onclick="togglePanel('preview')" title="Ocultar/Mostrar Preview">▶</button>
                 </div>
             </div>
             <div class="editor-container">
@@ -531,7 +527,7 @@
         <div class="divider hide-mobile" id="divider"></div>
         <div class="panel" id="previewPanel">
             <div class="panel-header">
-                <button class="panel-collapse-btn hide-mobile" onclick="togglePanel('preview')" title="Colapsar">▶</button>
+                <button class="panel-collapse-btn hide-mobile" onclick="togglePanel('editor')" title="Ocultar/Mostrar Editor">◀</button>
                 <span data-i18n="panel.preview">Vista previa</span>
             </div>
             <div class="preview-container">

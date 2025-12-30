@@ -274,22 +274,38 @@ function initKeyboardBar() {
 
 // ========== PANEL COLLAPSE/EXPAND ==========
 
+let editorExpanded = true;
+let previewExpanded = true;
+
 function togglePanel(panel) {
-    const panelEl = document.getElementById(panel + 'Panel');
-    const btn = panelEl.querySelector('.panel-collapse-btn');
+    const editorPanel = document.getElementById('editorPanel');
+    const previewPanel = document.getElementById('previewPanel');
+    const editorBtn = editorPanel.querySelector('.panel-collapse-btn');
+    const previewBtn = previewPanel.querySelector('.panel-collapse-btn');
 
-    panelEl.classList.toggle('collapsed');
-
-    // Update button arrow direction
     if (panel === 'editor') {
-        btn.textContent = panelEl.classList.contains('collapsed') ? '▶' : '◀';
+        // Toggle editor visibility
+        if (editorExpanded) {
+            editorPanel.classList.add('hidden');
+            editorExpanded = false;
+            previewBtn.textContent = '▶'; // Click to show editor
+        } else {
+            editorPanel.classList.remove('hidden');
+            editorExpanded = true;
+            previewBtn.textContent = '◀'; // Click to hide editor
+        }
     } else {
-        btn.textContent = panelEl.classList.contains('collapsed') ? '◀' : '▶';
-    }
-
-    // If preview was collapsed and now expanded, update it
-    if (panel === 'preview' && !panelEl.classList.contains('collapsed')) {
-        updatePreview();
+        // Toggle preview visibility
+        if (previewExpanded) {
+            previewPanel.classList.add('hidden');
+            previewExpanded = false;
+            editorBtn.textContent = '◀'; // Click to show preview
+        } else {
+            previewPanel.classList.remove('hidden');
+            previewExpanded = true;
+            editorBtn.textContent = '▶'; // Click to hide preview
+            updatePreview();
+        }
     }
 }
 
