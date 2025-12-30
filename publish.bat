@@ -55,6 +55,9 @@ xcopy /E /I /Q "src\bin" "%TEMPDIR%\MarkdownEditor\bin" >nul
 REM Copy styles/ / Copiar styles/
 xcopy /E /I /Q "src\styles" "%TEMPDIR%\MarkdownEditor\styles" >nul
 
+REM Copy lang/ / Copiar lang/
+xcopy /E /I /Q "src\lang" "%TEMPDIR%\MarkdownEditor\lang" >nul
+
 REM Create empty wkhtmltopdf folder / Crear carpeta wkhtmltopdf vacia
 mkdir "%TEMPDIR%\MarkdownEditor\wkhtmltopdf"
 
@@ -89,6 +92,8 @@ echo       bin\
 echo           main.py
 echo           modules\
 echo               app.py, config.py, etc.
+echo       lang\
+echo           en.json, es.json, fr.json, etc.
 echo       styles\
 echo       wkhtmltopdf\
 echo.
