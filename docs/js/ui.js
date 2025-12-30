@@ -363,20 +363,6 @@ async function copyPreviewFormatted() {
 }
 
 // ========== EDITOR EDIT FUNCTIONS ==========
-
-function toggleEditMenu() {
-    const menu = document.getElementById('editMenu');
-    const wasOpen = menu.classList.contains('show');
-    closeAllDropdowns();
-    if (!wasOpen) {
-        menu.classList.add('show');
-    }
-}
-
-function showKeyboardEditMenu() {
-    toggleEditMenu();
-}
-
 // Use native execCommand for undo support
 function editorSelectAll() {
     const editor = document.getElementById('editor');

@@ -253,7 +253,6 @@
             align-items: center;
             flex-shrink: 0;
         }
-        .edit-menu { right: 0; left: auto; min-width: 160px; }
         .editor-container, .preview-container { flex: 1; overflow: hidden; display: flex; min-height: 0; }
         #editor {
             flex: 1;
@@ -529,6 +528,11 @@
                     <div class="dropdown-item" onclick="saveFile()">💾 <span data-i18n="menu.save">Guardar</span></div>
                     <div class="dropdown-item" onclick="shareContent()">📤 <span data-i18n="menu.share">Compartir</span></div>
                     <div class="dropdown-item" onclick="copyHtml()">📋 <span data-i18n="menu.copyhtml">Copiar HTML</span></div>
+                    <div class="dropdown-header" data-i18n="menu.edit">Editar</div>
+                    <div class="dropdown-item" onclick="editorSelectAll()">📋 <span data-i18n="menu.selectall">Seleccionar todo</span></div>
+                    <div class="dropdown-item" onclick="editorCut()">✂️ <span data-i18n="menu.cut">Cortar</span></div>
+                    <div class="dropdown-item" onclick="editorCopy()">📄 <span data-i18n="menu.copy">Copiar</span></div>
+                    <div class="dropdown-item" onclick="editorPaste()">📥 <span data-i18n="menu.paste">Pegar</span></div>
                     <div class="dropdown-header" data-i18n="menu.tools">Herramientas</div>
                     <div class="dropdown-item" onclick="showStyleEditor()">🎨 <span data-i18n="menu.styleeditor">Editor de estilos</span></div>
                     <div class="dropdown-header" data-i18n="menu.help">Ayuda</div>
@@ -566,15 +570,6 @@
             <div class="panel-header">
                 <span data-i18n="panel.editor">Editor Markdown</span>
                 <div class="panel-header-right">
-                    <div class="dropdown">
-                        <button class="panel-action-btn" onclick="toggleEditMenu()" title="Editar">✂️</button>
-                        <div class="dropdown-content edit-menu" id="editMenu">
-                            <div class="dropdown-item" onclick="editorSelectAll()">📋 Seleccionar todo</div>
-                            <div class="dropdown-item" onclick="editorCopy()">📄 Copiar</div>
-                            <div class="dropdown-item" onclick="editorCut()">✂️ Cortar</div>
-                            <div class="dropdown-item" onclick="editorPaste()">📥 Pegar</div>
-                        </div>
-                    </div>
                     <div class="zoom-controls hide-mobile">
                         <button class="zoom-btn" onclick="editorZoomOut()" title="Zoom -">−</button>
                         <span class="zoom-label" id="editorZoomLabel">16px</span>
@@ -622,7 +617,6 @@
     <div class="keyboard-bar" id="keyboardBar">
         <div class="kb-group">
             <button class="kb-btn" onclick="showKeyboardSnippets()" title="Formato">✨ Formato</button>
-            <button class="kb-btn" onclick="showKeyboardEditMenu()" title="Editar">✂️ Editar</button>
         </div>
         <div class="kb-group">
             <button class="kb-btn kb-done" onclick="hideKeyboard()" data-i18n="keyboard.done">OK</button>
