@@ -2,7 +2,8 @@
 
 function newDoc() {
     if (confirm(t('confirm.new'))) {
-        editor.value = '';
+        // Generate example document with all snippets in current language
+        editor.value = generateExampleDoc();
         updatePreview();
         updateCharCount();
         autoSave();

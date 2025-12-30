@@ -1,7 +1,7 @@
 // Service Worker - Markdown Editor PWA
 // Auto-update on new GitHub Pages deployment
 
-const CACHE_VERSION = 'v1.2.0';
+const CACHE_VERSION = 'v1.3.0';
 const CACHE_NAME = `md-editor-${CACHE_VERSION}`;
 
 const ASSETS = [
@@ -13,6 +13,7 @@ const ASSETS = [
     './js/styles.js',
     './js/ui.js',
     './js/storage.js',
+    './js/snippets.js',
     './js/editor.js',
     './js/actions.js',
     './js/sw-manager.js',

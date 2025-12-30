@@ -6,9 +6,12 @@ function initEditor() {
     editor = document.getElementById('editor');
     preview = document.getElementById('preview');
 
-    // Load saved content or example
+    // Build snippets menu
+    buildSnippetsMenu();
+
+    // Load saved content or generate example
     if (!loadSaved()) {
-        editor.value = exampleDoc;
+        editor.value = generateExampleDoc();
     }
 
     updatePreview();
