@@ -437,7 +437,11 @@
             font-size: 18px;
             font-weight: 700;
             margin-top: 20px;
+            cursor: pointer;
+            transition: opacity 0.2s;
         }
+        .about-version:hover { opacity: 0.7; }
+        .about-version:active { opacity: 0.5; }
         .about-copyright {
             text-align: center;
             color: var(--text-secondary);
@@ -599,7 +603,7 @@
                     </div>
                 </div>
 
-                <div class="about-version" id="aboutVersion"></div>
+                <div class="about-version" id="aboutVersion" onclick="forceUpdate()" title="Clic para actualizar"></div>
                 <div class="about-copyright">© 2025 Fernando Ruiz Casas</div>
             </div>
         </div>

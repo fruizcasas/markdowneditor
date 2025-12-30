@@ -55,3 +55,32 @@ function checkForUpdates() {
         });
     }
 }
+
+// Force update: clear cache, unregister SW, and reload
+async function forceUpdate() {
+    showToast('🔄 Actualizando...', true);
+
+    try {
+        // Unregister all service workers
+        if ('serviceWorker' in navigator) {
+            const registrations = await navigator.serviceWorker.getRegistrations();
+            for (const reg of registrations) {
+                await reg.unregister();
+            }
+        }
+
+        // Clear all caches
+        if ('caches' in window) {
+            const cacheNames = await caches.keys();
+            for (const name of cacheNames) {
+                await caches.delete(name);
+            }
+        }
+
+        // Reload without cache
+        window.location.reload(true);
+    } catch (err) {
+        console.error('Force update error:', err);
+        window.location.reload(true);
+    }
+}
