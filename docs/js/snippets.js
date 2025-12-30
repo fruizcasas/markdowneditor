@@ -58,6 +58,24 @@ function closeSnippetsOnClickOutside(e) {
     }
 }
 
+// Inline format markers
+const formatMarkers = {
+    bold: { prefix: '**', suffix: '**' },
+    italic: { prefix: '*', suffix: '*' },
+    strikethrough: { prefix: '~~', suffix: '~~' },
+    inline_code: { prefix: '`', suffix: '`' }
+};
+
+// Strip existing inline formatting from text
+function stripFormatting(text) {
+    // Remove bold, italic, strikethrough, inline code
+    return text
+        .replace(/^\*\*(.+)\*\*$/, '$1')      // bold
+        .replace(/^\*(.+)\*$/, '$1')          // italic
+        .replace(/^~~(.+)~~$/, '$1')          // strikethrough
+        .replace(/^`(.+)`$/, '$1');           // inline code
+}
+
 function insertSnippet(key) {
     const snips = getSnippets();
     const snippet = snips[key];
@@ -67,14 +85,29 @@ function insertSnippet(key) {
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
     const text = textarea.value;
+    const selectedText = text.substring(start, end);
 
-    // Insert snippet at cursor position
-    textarea.value = text.substring(0, start) + snippet.content + text.substring(end);
+    let insertText;
+    let newCursorPos;
 
-    // Move cursor to end of inserted snippet
-    const newPos = start + snippet.content.length;
-    textarea.selectionStart = newPos;
-    textarea.selectionEnd = newPos;
+    // If text is selected and it's an inline format, wrap selection
+    if (selectedText && formatMarkers[key]) {
+        const marker = formatMarkers[key];
+        const cleanText = stripFormatting(selectedText);
+        insertText = marker.prefix + cleanText + marker.suffix;
+        newCursorPos = start + insertText.length;
+    } else {
+        // Default: insert snippet content
+        insertText = snippet.content;
+        newCursorPos = start + insertText.length;
+    }
+
+    // Insert at cursor position
+    textarea.value = text.substring(0, start) + insertText + text.substring(end);
+
+    // Move cursor
+    textarea.selectionStart = newCursorPos;
+    textarea.selectionEnd = newCursorPos;
     textarea.focus();
 
     // Update preview
