@@ -253,30 +253,7 @@
             align-items: center;
             flex-shrink: 0;
         }
-        .format-bar {
-            display: flex;
-            gap: 2px;
-            padding: 6px 8px;
-            background: var(--bg-secondary);
-            border-bottom: 1px solid var(--border);
-            flex-wrap: wrap;
-            flex-shrink: 0;
-        }
-        .fmt-btn {
-            background: var(--bg-tertiary);
-            border: none;
-            color: var(--text-primary);
-            min-width: 32px;
-            height: 28px;
-            padding: 0 8px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 13px;
-            font-family: inherit;
-        }
-        .fmt-btn:hover { background: var(--accent); color: white; }
-        .fmt-btn:active { transform: scale(0.95); }
-        .fmt-sep { width: 1px; background: var(--border); margin: 0 4px; }
+        .edit-menu { right: 0; left: auto; min-width: 160px; }
         .editor-container, .preview-container { flex: 1; overflow: hidden; display: flex; min-height: 0; }
         #editor {
             flex: 1;
@@ -589,6 +566,15 @@
             <div class="panel-header">
                 <span data-i18n="panel.editor">Editor Markdown</span>
                 <div class="panel-header-right">
+                    <div class="dropdown">
+                        <button class="panel-action-btn" onclick="toggleEditMenu()" title="Editar">✂️</button>
+                        <div class="dropdown-content edit-menu" id="editMenu">
+                            <div class="dropdown-item" onclick="editorSelectAll()">📋 Seleccionar todo</div>
+                            <div class="dropdown-item" onclick="editorCopy()">📄 Copiar</div>
+                            <div class="dropdown-item" onclick="editorCut()">✂️ Cortar</div>
+                            <div class="dropdown-item" onclick="editorPaste()">📥 Pegar</div>
+                        </div>
+                    </div>
                     <div class="zoom-controls hide-mobile">
                         <button class="zoom-btn" onclick="editorZoomOut()" title="Zoom -">−</button>
                         <span class="zoom-label" id="editorZoomLabel">16px</span>
@@ -597,21 +583,6 @@
                     <span class="saved-indicator" id="savedIndicator"></span>
                     <button class="panel-collapse-btn hide-mobile" onclick="togglePanel('preview')" title="Ocultar/Mostrar Preview">▶</button>
                 </div>
-            </div>
-            <div class="format-bar">
-                <button class="fmt-btn" onclick="insertSnippet('bold')" title="Negrita"><b>B</b></button>
-                <button class="fmt-btn" onclick="insertSnippet('italic')" title="Cursiva"><i>I</i></button>
-                <button class="fmt-btn" onclick="insertSnippet('strikethrough')" title="Tachado"><s>S</s></button>
-                <span class="fmt-sep"></span>
-                <button class="fmt-btn" onclick="insertSnippet('h1')" title="Título 1">H1</button>
-                <button class="fmt-btn" onclick="insertSnippet('h2')" title="Título 2">H2</button>
-                <button class="fmt-btn" onclick="insertSnippet('h3')" title="Título 3">H3</button>
-                <span class="fmt-sep"></span>
-                <button class="fmt-btn" onclick="insertSnippet('bullet_list')" title="Lista">☰</button>
-                <button class="fmt-btn" onclick="insertSnippet('numbered_list')" title="Lista numerada">1.</button>
-                <button class="fmt-btn" onclick="insertSnippet('code_block')" title="Código">&lt;/&gt;</button>
-                <button class="fmt-btn" onclick="insertSnippet('link')" title="Enlace">🔗</button>
-                <button class="fmt-btn" onclick="insertSnippet('quote')" title="Cita">❝</button>
             </div>
             <div class="editor-container">
                 <textarea id="editor" spellcheck="false"></textarea>
@@ -624,7 +595,7 @@
                 <span data-i18n="panel.preview">Vista previa</span>
                 <div class="panel-header-right">
                     <button class="panel-action-btn" onclick="copyPreviewFormatted()" title="Copiar contenido formateado">📋</button>
-                    <div class="zoom-controls hide-mobile">
+                    <div class="zoom-controls">
                         <button class="zoom-btn" onclick="previewZoomOut()" title="Zoom -">−</button>
                         <span class="zoom-label" id="previewZoomLabel">16px</span>
                         <button class="zoom-btn" onclick="previewZoomIn()" title="Zoom +">+</button>
@@ -650,7 +621,8 @@
     <!-- Keyboard accessory bar for mobile -->
     <div class="keyboard-bar" id="keyboardBar">
         <div class="kb-group">
-            <button class="kb-btn" onclick="showKeyboardSnippets()" title="Snippets">✨ Formato</button>
+            <button class="kb-btn" onclick="showKeyboardSnippets()" title="Formato">✨ Formato</button>
+            <button class="kb-btn" onclick="showKeyboardEditMenu()" title="Editar">✂️ Editar</button>
         </div>
         <div class="kb-group">
             <button class="kb-btn kb-done" onclick="hideKeyboard()" data-i18n="keyboard.done">OK</button>

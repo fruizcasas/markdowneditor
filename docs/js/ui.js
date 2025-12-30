@@ -362,6 +362,101 @@ async function copyPreviewFormatted() {
     }
 }
 
+// ========== EDITOR EDIT FUNCTIONS ==========
+
+function toggleEditMenu() {
+    const menu = document.getElementById('editMenu');
+    const wasOpen = menu.classList.contains('show');
+    closeAllDropdowns();
+    if (!wasOpen) {
+        menu.classList.add('show');
+    }
+}
+
+function showKeyboardEditMenu() {
+    toggleEditMenu();
+}
+
+function editorSelectAll() {
+    const editor = document.getElementById('editor');
+    editor.focus();
+    editor.select();
+    closeAllDropdowns();
+    showToast('📋 Todo seleccionado');
+}
+
+async function editorCopy() {
+    const editor = document.getElementById('editor');
+    const text = editor.value.substring(editor.selectionStart, editor.selectionEnd);
+
+    if (!text) {
+        showToast('⚠️ Selecciona texto primero');
+        return;
+    }
+
+    try {
+        await navigator.clipboard.writeText(text);
+        showToast('📄 Copiado');
+    } catch (err) {
+        fallbackCopy(text);
+        showToast('📄 Copiado');
+    }
+    closeAllDropdowns();
+}
+
+async function editorCut() {
+    const editor = document.getElementById('editor');
+    const start = editor.selectionStart;
+    const end = editor.selectionEnd;
+    const text = editor.value.substring(start, end);
+
+    if (!text) {
+        showToast('⚠️ Selecciona texto primero');
+        return;
+    }
+
+    try {
+        await navigator.clipboard.writeText(text);
+    } catch (err) {
+        fallbackCopy(text);
+    }
+
+    // Remove selected text
+    editor.value = editor.value.substring(0, start) + editor.value.substring(end);
+    editor.selectionStart = editor.selectionEnd = start;
+    editor.focus();
+
+    updatePreview();
+    updateCharCount();
+    autoSave();
+
+    showToast('✂️ Cortado');
+    closeAllDropdowns();
+}
+
+async function editorPaste() {
+    const editor = document.getElementById('editor');
+
+    try {
+        const text = await navigator.clipboard.readText();
+        const start = editor.selectionStart;
+        const end = editor.selectionEnd;
+
+        editor.value = editor.value.substring(0, start) + text + editor.value.substring(end);
+        editor.selectionStart = editor.selectionEnd = start + text.length;
+        editor.focus();
+
+        updatePreview();
+        updateCharCount();
+        autoSave();
+
+        showToast('📥 Pegado');
+    } catch (err) {
+        showToast('⚠️ No se puede acceder al portapapeles');
+    }
+    closeAllDropdowns();
+}
+
 // ========== MENU ==========
 
 function toggleMenu() {
