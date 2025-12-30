@@ -566,10 +566,12 @@
                     </div>
                     <div class="dropdown-header" onclick="toggleSubmenu(this)" data-i18n="menu.edit">Editar</div>
                     <div class="submenu">
+                        <div class="dropdown-item" onclick="editorUndo()">↩️ <span data-i18n="menu.undo">Deshacer</span></div>
                         <div class="dropdown-item" onclick="editorSelectAll()">✓ <span data-i18n="menu.selectall">Seleccionar todo</span></div>
                         <div class="dropdown-item" onclick="editorCut()">✂️ <span data-i18n="menu.cut">Cortar</span></div>
                         <div class="dropdown-item" onclick="editorCopy()">📄 <span data-i18n="menu.copy">Copiar</span></div>
                         <div class="dropdown-item" onclick="editorPaste()">📋 <span data-i18n="menu.paste">Pegar</span></div>
+                        <div class="dropdown-item" onclick="editorClear()">🗑️ <span data-i18n="menu.clear">Limpiar</span></div>
                     </div>
                     <div class="dropdown-header" onclick="toggleSubmenu(this)" data-i18n="menu.settings">Ajustes</div>
                     <div class="submenu">

@@ -418,6 +418,23 @@ function editorPaste() {
     closeAllDropdowns();
 }
 
+function editorUndo() {
+    document.getElementById('editor').focus();
+    document.execCommand('undo');
+    closeAllDropdowns();
+}
+
+function editorClear() {
+    const editor = document.getElementById('editor');
+    if (confirm(t('confirm.clear'))) {
+        editor.value = '';
+        updatePreview();
+        updateCharCount();
+        autoSave();
+    }
+    closeAllDropdowns();
+}
+
 // ========== MENU ==========
 
 function toggleMenu() {
