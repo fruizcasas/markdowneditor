@@ -58,22 +58,54 @@ function closeSnippetsOnClickOutside(e) {
     }
 }
 
-// Inline format markers
-const formatMarkers = {
+// Inline format markers (wrap selection)
+const inlineFormats = {
     bold: { prefix: '**', suffix: '**' },
     italic: { prefix: '*', suffix: '*' },
     strikethrough: { prefix: '~~', suffix: '~~' },
     inline_code: { prefix: '`', suffix: '`' }
 };
 
+// Header formats (single line prefix)
+const headerFormats = {
+    h1: '# ',
+    h2: '## ',
+    h3: '### '
+};
+
+// Line-prefix formats (prefix each line)
+const linePrefixFormats = {
+    quote: '> ',
+    bullet_list: '- ',
+    task_list: '- [ ] '
+};
+
 // Strip existing inline formatting from text
-function stripFormatting(text) {
-    // Remove bold, italic, strikethrough, inline code
+function stripInlineFormatting(text) {
     return text
-        .replace(/^\*\*(.+)\*\*$/, '$1')      // bold
-        .replace(/^\*(.+)\*$/, '$1')          // italic
-        .replace(/^~~(.+)~~$/, '$1')          // strikethrough
-        .replace(/^`(.+)`$/, '$1');           // inline code
+        .replace(/^\*\*(.+)\*\*$/, '$1')
+        .replace(/^\*(.+)\*$/, '$1')
+        .replace(/^~~(.+)~~$/, '$1')
+        .replace(/^`(.+)`$/, '$1');
+}
+
+// Strip line prefixes (headers, quotes, lists)
+function stripLinePrefixes(text) {
+    return text
+        .replace(/^#{1,6}\s+/, '')           // headers
+        .replace(/^>\s?/, '')                 // quote
+        .replace(/^[-*+]\s(\[.\]\s)?/, '')   // bullet/task list
+        .replace(/^\d+\.\s/, '');             // numbered list
+}
+
+// Apply prefix to each line
+function prefixLines(text, prefix) {
+    return text.split('\n').map(line => prefix + stripLinePrefixes(line)).join('\n');
+}
+
+// Apply numbered list (1. 2. 3.)
+function numberLines(text) {
+    return text.split('\n').map((line, i) => `${i + 1}. ${stripLinePrefixes(line)}`).join('\n');
 }
 
 function insertSnippet(key) {
@@ -90,14 +122,35 @@ function insertSnippet(key) {
     let insertText;
     let newCursorPos;
 
-    // If text is selected and it's an inline format, wrap selection
-    if (selectedText && formatMarkers[key]) {
-        const marker = formatMarkers[key];
-        const cleanText = stripFormatting(selectedText);
-        insertText = marker.prefix + cleanText + marker.suffix;
+    if (selectedText) {
+        // Smart transformation based on snippet type
+        if (inlineFormats[key]) {
+            // Inline: wrap selection
+            const cleanText = stripInlineFormatting(selectedText);
+            insertText = inlineFormats[key].prefix + cleanText + inlineFormats[key].suffix;
+        } else if (headerFormats[key]) {
+            // Header: prefix first line only
+            const cleanText = stripLinePrefixes(selectedText.split('\n')[0]);
+            insertText = headerFormats[key] + cleanText;
+        } else if (linePrefixFormats[key]) {
+            // Line prefix: apply to each line
+            insertText = prefixLines(selectedText, linePrefixFormats[key]);
+        } else if (key === 'numbered_list') {
+            // Numbered list: 1. 2. 3.
+            insertText = numberLines(selectedText);
+        } else if (key === 'code_block') {
+            // Code block: wrap in ```
+            insertText = '```\n' + selectedText + '\n```';
+        } else if (key === 'link') {
+            // Link: use selection as text
+            insertText = '[' + selectedText + '](url)';
+        } else {
+            // No transformation: insert template
+            insertText = snippet.content;
+        }
         newCursorPos = start + insertText.length;
     } else {
-        // Default: insert snippet content
+        // No selection: insert template
         insertText = snippet.content;
         newCursorPos = start + insertText.length;
     }
