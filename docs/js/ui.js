@@ -96,6 +96,61 @@ function getPreviewZoomCSS() {
     `;
 }
 
+// ========== PINCH TO ZOOM ==========
+
+function initPinchZoom() {
+    const editor = document.getElementById('editor');
+    const previewContainer = document.querySelector('.preview-container');
+
+    // Editor pinch zoom
+    setupPinchZoom(editor, (delta) => {
+        if (delta > 0) editorZoomIn();
+        else editorZoomOut();
+    });
+
+    // Preview pinch zoom
+    setupPinchZoom(previewContainer, (delta) => {
+        if (delta > 0) previewZoomIn();
+        else previewZoomOut();
+    });
+}
+
+function setupPinchZoom(element, onZoom) {
+    let initialDistance = 0;
+    let lastZoomTime = 0;
+
+    element.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 2) {
+            initialDistance = getDistance(e.touches[0], e.touches[1]);
+        }
+    }, { passive: true });
+
+    element.addEventListener('touchmove', (e) => {
+        if (e.touches.length === 2 && initialDistance > 0) {
+            const currentDistance = getDistance(e.touches[0], e.touches[1]);
+            const diff = currentDistance - initialDistance;
+
+            // Throttle zoom changes (200ms)
+            const now = Date.now();
+            if (Math.abs(diff) > 30 && now - lastZoomTime > 200) {
+                onZoom(diff > 0 ? 1 : -1);
+                initialDistance = currentDistance;
+                lastZoomTime = now;
+            }
+        }
+    }, { passive: true });
+
+    element.addEventListener('touchend', () => {
+        initialDistance = 0;
+    }, { passive: true });
+}
+
+function getDistance(touch1, touch2) {
+    const dx = touch1.clientX - touch2.clientX;
+    const dy = touch1.clientY - touch2.clientY;
+    return Math.sqrt(dx * dx + dy * dy);
+}
+
 // ========== REAL-TIME SCROLL SYNC ==========
 
 function initScrollSync() {

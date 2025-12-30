@@ -7,6 +7,7 @@ function init() {
     initKeyboardBar();
     initDivider();
     initScrollSync();
+    initPinchZoom();
     registerSW();
     handleUrlParams();
 }
