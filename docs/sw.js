@@ -1,13 +1,16 @@
 // Service Worker - Markdown Editor PWA
 // Auto-update on new GitHub Pages deployment
 
-const CACHE_VERSION = 'v1.3.0';
+const CACHE_VERSION = 'v1.4.0';
 const CACHE_NAME = `md-editor-${CACHE_VERSION}`;
 
 const ASSETS = [
     './',
     './index.html',
     './manifest.json',
+    './icons/icon-192.svg',
+    './icons/icon-512.svg',
+    './icons/apple-touch-icon.svg',
     './js/config.js',
     './js/i18n.js',
     './js/styles.js',
