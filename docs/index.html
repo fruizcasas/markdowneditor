@@ -622,18 +622,18 @@
             <div class="panel-header">
                 <button class="panel-collapse-btn hide-mobile" onclick="togglePanel('editor')" title="Ocultar/Mostrar Editor">◀</button>
                 <span data-i18n="panel.preview">Vista previa</span>
-                <div class="panel-header-right hide-mobile">
+                <div class="panel-header-right">
                     <button class="panel-action-btn" onclick="copyPreviewFormatted()" title="Copiar contenido formateado">📋</button>
-                    <div class="zoom-controls">
+                    <div class="zoom-controls hide-mobile">
                         <button class="zoom-btn" onclick="previewZoomOut()" title="Zoom -">−</button>
                         <span class="zoom-label" id="previewZoomLabel">16px</span>
                         <button class="zoom-btn" onclick="previewZoomIn()" title="Zoom +">+</button>
                     </div>
-                    <label class="sync-toggle-mini" title="Scroll sincronizado">
+                    <label class="sync-toggle-mini hide-mobile" title="Scroll sincronizado">
                         <input type="checkbox" id="scrollSyncCheckbox" checked onchange="toggleScrollSync()">
                         <span>🔗</span>
                     </label>
-                    <button class="panel-sync-btn" onclick="manualScrollSync()" title="Sincronizar ahora">⟳</button>
+                    <button class="panel-sync-btn hide-mobile" onclick="manualScrollSync()" title="Sincronizar ahora">⟳</button>
                 </div>
             </div>
             <div class="preview-container">
