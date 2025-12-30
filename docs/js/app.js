@@ -4,6 +4,8 @@
 function init() {
     initEditor();
     initKeyboardBar();
+    initDivider();
+    initScrollSync();
     registerSW();
     handleUrlParams();
 }

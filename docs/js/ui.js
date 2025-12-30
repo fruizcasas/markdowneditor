@@ -9,6 +9,89 @@ function showToast(msg, isUpdate = false) {
 
 // Store scroll position between panels
 let lastScrollPercent = 0;
+let isScrollSyncing = false; // Prevent infinite scroll loops
+let scrollSyncEnabled = true; // Toggle for scroll sync
+
+// ========== REAL-TIME SCROLL SYNC ==========
+
+function initScrollSync() {
+    const editor = document.getElementById('editor');
+    const preview = document.getElementById('preview');
+
+    // Sync editor scroll to preview
+    editor.addEventListener('scroll', () => {
+        if (!scrollSyncEnabled) return;
+        if (isScrollSyncing) return;
+        if (window.innerWidth <= 768) return; // Only sync in dual-pane mode
+
+        const maxScroll = editor.scrollHeight - editor.clientHeight;
+        if (maxScroll <= 0) return;
+
+        const percent = editor.scrollTop / maxScroll;
+        syncPreviewScroll(percent);
+    });
+
+    // Sync preview scroll to editor (when preview iframe loads)
+    preview.addEventListener('load', () => {
+        try {
+            const doc = preview.contentDocument;
+            if (!doc) return;
+
+            doc.addEventListener('scroll', () => {
+                if (!scrollSyncEnabled) return;
+                if (isScrollSyncing) return;
+                if (window.innerWidth <= 768) return;
+
+                const html = doc.documentElement;
+                const maxScroll = html.scrollHeight - html.clientHeight;
+                if (maxScroll <= 0) return;
+
+                const percent = html.scrollTop / maxScroll;
+                syncEditorScroll(percent);
+            });
+        } catch (e) {}
+    });
+}
+
+function toggleScrollSync() {
+    const checkbox = document.getElementById('scrollSyncCheckbox');
+    scrollSyncEnabled = checkbox.checked;
+}
+
+function manualScrollSync() {
+    // Sync preview to current editor position
+    const editor = document.getElementById('editor');
+    const maxScroll = editor.scrollHeight - editor.clientHeight;
+    if (maxScroll <= 0) return;
+
+    const percent = editor.scrollTop / maxScroll;
+    syncPreviewScroll(percent);
+    showToast(scrollSyncEnabled ? '🔗 Sincronizado' : '🔗 Sincronizado (auto desactivado)');
+}
+
+function syncPreviewScroll(percent) {
+    const preview = document.getElementById('preview');
+    try {
+        const doc = preview.contentDocument;
+        if (!doc) return;
+
+        const html = doc.documentElement;
+        const maxScroll = html.scrollHeight - html.clientHeight;
+
+        isScrollSyncing = true;
+        html.scrollTop = maxScroll * percent;
+        setTimeout(() => { isScrollSyncing = false; }, 50);
+    } catch (e) {}
+}
+
+function syncEditorScroll(percent) {
+    const editor = document.getElementById('editor');
+    const maxScroll = editor.scrollHeight - editor.clientHeight;
+
+    isScrollSyncing = true;
+    editor.scrollTop = maxScroll * percent;
+    setTimeout(() => { isScrollSyncing = false; }, 50);
+}
 
 function showPanel(panel) {
     // Get current scroll percentage before switching
@@ -186,5 +269,81 @@ function initKeyboardBar() {
     if (window.visualViewport) {
         window.visualViewport.addEventListener('resize', updateKeyboardBarPosition);
         window.visualViewport.addEventListener('scroll', updateKeyboardBarPosition);
+    }
+}
+
+// ========== PANEL COLLAPSE/EXPAND ==========
+
+function togglePanel(panel) {
+    const panelEl = document.getElementById(panel + 'Panel');
+    const btn = panelEl.querySelector('.panel-collapse-btn');
+
+    panelEl.classList.toggle('collapsed');
+
+    // Update button arrow direction
+    if (panel === 'editor') {
+        btn.textContent = panelEl.classList.contains('collapsed') ? '▶' : '◀';
+    } else {
+        btn.textContent = panelEl.classList.contains('collapsed') ? '◀' : '▶';
+    }
+
+    // If preview was collapsed and now expanded, update it
+    if (panel === 'preview' && !panelEl.classList.contains('collapsed')) {
+        updatePreview();
+    }
+}
+
+// ========== DIVIDER DRAG ==========
+
+function initDivider() {
+    const divider = document.getElementById('divider');
+    const main = document.querySelector('.main');
+    const editorPanel = document.getElementById('editorPanel');
+    const previewPanel = document.getElementById('previewPanel');
+
+    let isDragging = false;
+
+    divider.addEventListener('mousedown', startDrag);
+    divider.addEventListener('touchstart', startDrag, { passive: false });
+
+    function startDrag(e) {
+        if (window.innerWidth <= 768) return; // No drag on mobile
+        isDragging = true;
+        divider.classList.add('dragging');
+        document.body.style.cursor = 'col-resize';
+        document.body.style.userSelect = 'none';
+
+        document.addEventListener('mousemove', drag);
+        document.addEventListener('touchmove', drag, { passive: false });
+        document.addEventListener('mouseup', stopDrag);
+        document.addEventListener('touchend', stopDrag);
+
+        e.preventDefault();
+    }
+
+    function drag(e) {
+        if (!isDragging) return;
+
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const mainRect = main.getBoundingClientRect();
+        const percent = ((clientX - mainRect.left) / mainRect.width) * 100;
+
+        // Limit between 20% and 80%
+        const clampedPercent = Math.max(20, Math.min(80, percent));
+
+        editorPanel.style.flex = `0 0 ${clampedPercent}%`;
+        previewPanel.style.flex = `0 0 ${100 - clampedPercent}%`;
+    }
+
+    function stopDrag() {
+        isDragging = false;
+        divider.classList.remove('dragging');
+        document.body.style.cursor = '';
+        document.body.style.userSelect = '';
+
+        document.removeEventListener('mousemove', drag);
+        document.removeEventListener('touchmove', drag);
+        document.removeEventListener('mouseup', stopDrag);
+        document.removeEventListener('touchend', stopDrag);
     }
 }
