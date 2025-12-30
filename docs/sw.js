@@ -1,13 +1,14 @@
 // Service Worker - Markdown Editor PWA
 // Auto-update on new GitHub Pages deployment
 
-const CACHE_VERSION = 'v1.0.0';
+const CACHE_VERSION = 'v1.1.0';
 const CACHE_NAME = `md-editor-${CACHE_VERSION}`;
 
 const ASSETS = [
     './',
     './index.html',
     './manifest.json',
+    './js/app.js',
     'https://cdn.jsdelivr.net/npm/marked/marked.min.js'
 ];
 
