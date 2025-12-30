@@ -67,7 +67,7 @@
             padding-left: var(--safe-left);
             padding-right: var(--safe-right);
         }
-        /* Toolbar - fixed to stay visible when iOS keyboard opens */
+        /* Toolbar */
         .toolbar {
             background: var(--bg-secondary);
             padding: 8px 12px;
@@ -80,17 +80,46 @@
             border-bottom: 1px solid var(--border);
             flex-wrap: wrap;
             flex-shrink: 0;
+        }
+        /* Keyboard accessory bar - shows above iOS keyboard */
+        .keyboard-bar {
+            display: none;
             position: fixed;
-            top: 0;
+            bottom: 0;
             left: 0;
             right: 0;
-            z-index: 100;
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 6px 12px;
+            padding-bottom: calc(6px + var(--safe-bottom));
+            z-index: 150;
+            gap: 8px;
+            align-items: center;
+            justify-content: space-between;
         }
-        /* Spacer to push content below fixed toolbar */
-        .toolbar-spacer {
-            height: 60px;
-            height: calc(60px + var(--safe-top));
-            flex-shrink: 0;
+        .keyboard-bar.show { display: flex; }
+        .keyboard-bar .kb-group { display: flex; gap: 4px; align-items: center; }
+        .keyboard-bar .kb-btn {
+            background: var(--bg-tertiary);
+            border: none;
+            color: var(--text-primary);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 16px;
+            min-width: 40px;
+            min-height: 36px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .keyboard-bar .kb-btn:active { background: var(--accent); }
+        .keyboard-bar .kb-done {
+            background: var(--accent);
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            padding: 8px 16px;
         }
         .toolbar-group { display: flex; gap: 4px; align-items: center; }
         .toolbar-separator { width: 1px; height: 24px; background: var(--border); margin: 0 8px; }
@@ -192,7 +221,6 @@
         .tab.active { border-bottom-color: var(--accent); color: var(--accent); }
         @media (max-width: 768px) {
             .toolbar { padding: 8px; padding-top: calc(8px + var(--safe-top)); gap: 6px; }
-            .toolbar-spacer { height: calc(56px + var(--safe-top)); }
             .btn { padding: 8px 10px; font-size: 14px; }
             .btn-icon { padding: 8px 10px; font-size: 18px; min-width: 40px; min-height: 40px; }
             .toolbar-separator { display: none; }
@@ -433,8 +461,6 @@
         </div>
     </div>
 
-    <div class="toolbar-spacer"></div>
-
     <div class="tabs">
         <div class="tab active" onclick="showPanel('editor')" data-i18n="panel.editor">Editor</div>
         <div class="tab" onclick="showPanel('preview')" data-i18n="panel.preview">Vista previa</div>
@@ -464,6 +490,22 @@
     <div class="status-bar">
         <span id="status" data-i18n="status.ready">Listo</span>
         <span id="charCount">0 caracteres</span>
+    </div>
+
+    <!-- Keyboard accessory bar for mobile -->
+    <div class="keyboard-bar" id="keyboardBar">
+        <div class="kb-group">
+            <button class="kb-btn" onclick="insertSnippet('bold')" title="Negrita">𝐁</button>
+            <button class="kb-btn" onclick="insertSnippet('italic')" title="Cursiva">𝐼</button>
+            <button class="kb-btn" onclick="insertSnippet('h2')" title="Encabezado">H</button>
+            <button class="kb-btn" onclick="insertSnippet('link')" title="Enlace">🔗</button>
+            <button class="kb-btn" onclick="insertSnippet('bullet_list')" title="Lista">•</button>
+        </div>
+        <div class="kb-group">
+            <button class="kb-btn" onclick="showKeyboardSnippets()" title="Snippets">✨</button>
+            <button class="kb-btn" onclick="showKeyboardStyles()" title="Estilos">🎨</button>
+            <button class="kb-btn kb-done" onclick="hideKeyboard()" data-i18n="keyboard.done">OK</button>
+        </div>
     </div>
 
     <div class="toast" id="toast"></div>

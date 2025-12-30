@@ -3,6 +3,7 @@
 
 function init() {
     initEditor();
+    initKeyboardBar();
     registerSW();
     handleUrlParams();
 }
