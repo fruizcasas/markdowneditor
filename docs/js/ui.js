@@ -392,7 +392,23 @@ async function copyPreviewFormatted() {
 }
 
 // ========== EDITOR EDIT FUNCTIONS ==========
-// Use native execCommand for undo support
+// Undo history for programmatic changes
+const undoHistory = [];
+const MAX_UNDO_HISTORY = 20;
+
+function saveToHistory() {
+    const editor = document.getElementById('editor');
+    undoHistory.push({
+        content: editor.value,
+        selectionStart: editor.selectionStart,
+        selectionEnd: editor.selectionEnd
+    });
+    // Limit history size
+    if (undoHistory.length > MAX_UNDO_HISTORY) {
+        undoHistory.shift();
+    }
+}
+
 function editorSelectAll() {
     const editor = document.getElementById('editor');
     editor.focus();
@@ -419,14 +435,29 @@ function editorPaste() {
 }
 
 function editorUndo() {
-    document.getElementById('editor').focus();
-    document.execCommand('undo');
+    const editor = document.getElementById('editor');
+    editor.focus();
+
+    // First try our manual history
+    if (undoHistory.length > 0) {
+        const state = undoHistory.pop();
+        editor.value = state.content;
+        editor.selectionStart = state.selectionStart;
+        editor.selectionEnd = state.selectionEnd;
+        updatePreview();
+        updateCharCount();
+        autoSave();
+    } else {
+        // Fall back to native undo
+        document.execCommand('undo');
+    }
     closeAllDropdowns();
 }
 
 function editorClear() {
     const editor = document.getElementById('editor');
     if (confirm(t('confirm.clear'))) {
+        saveToHistory(); // Save before clearing
         editor.value = '';
         updatePreview();
         updateCharCount();
