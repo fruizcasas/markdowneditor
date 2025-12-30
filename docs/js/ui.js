@@ -373,6 +373,7 @@ let previewExpanded = true;
 function togglePanel(panel) {
     const editorPanel = document.getElementById('editorPanel');
     const previewPanel = document.getElementById('previewPanel');
+    const divider = document.getElementById('divider');
     const editorBtn = editorPanel.querySelector('.panel-collapse-btn');
     const previewBtn = previewPanel.querySelector('.panel-collapse-btn');
 
@@ -380,23 +381,37 @@ function togglePanel(panel) {
         // Toggle editor visibility
         if (editorExpanded) {
             editorPanel.classList.add('hidden');
+            divider.classList.add('hidden');
             editorExpanded = false;
-            previewBtn.textContent = '▶'; // Click to show editor
+            previewBtn.textContent = '▶';
+            // Preview takes full width
+            previewPanel.style.flex = '1';
         } else {
             editorPanel.classList.remove('hidden');
+            divider.classList.remove('hidden');
             editorExpanded = true;
-            previewBtn.textContent = '◀'; // Click to hide editor
+            previewBtn.textContent = '◀';
+            // Reset both to 50/50
+            editorPanel.style.flex = '1';
+            previewPanel.style.flex = '1';
         }
     } else {
         // Toggle preview visibility
         if (previewExpanded) {
             previewPanel.classList.add('hidden');
+            divider.classList.add('hidden');
             previewExpanded = false;
-            editorBtn.textContent = '◀'; // Click to show preview
+            editorBtn.textContent = '◀';
+            // Editor takes full width
+            editorPanel.style.flex = '1';
         } else {
             previewPanel.classList.remove('hidden');
+            divider.classList.remove('hidden');
             previewExpanded = true;
-            editorBtn.textContent = '▶'; // Click to hide preview
+            editorBtn.textContent = '▶';
+            // Reset both to 50/50
+            editorPanel.style.flex = '1';
+            previewPanel.style.flex = '1';
             updatePreview();
         }
     }
