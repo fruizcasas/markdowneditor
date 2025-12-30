@@ -41,3 +41,42 @@ function fallbackCopy(text) {
     document.execCommand('copy');
     document.body.removeChild(ta);
 }
+
+// ========== MENU ==========
+
+function toggleMenu() {
+    const menu = document.getElementById('mainMenu');
+    closeAllDropdowns();
+    menu.classList.toggle('show');
+
+    if (menu.classList.contains('show')) {
+        setTimeout(() => {
+            document.addEventListener('click', closeMenuOnClickOutside);
+        }, 10);
+    }
+}
+
+function closeMenuOnClickOutside(e) {
+    const menu = document.getElementById('mainMenu');
+    const btn = e.target.closest('.dropdown');
+    if (!btn || !btn.contains(menu)) {
+        menu.classList.remove('show');
+        document.removeEventListener('click', closeMenuOnClickOutside);
+    }
+}
+
+function closeAllDropdowns() {
+    document.querySelectorAll('.dropdown-content').forEach(d => d.classList.remove('show'));
+}
+
+// ========== ABOUT MODAL ==========
+
+function showAbout() {
+    closeAllDropdowns();
+    document.getElementById('aboutVersion').textContent = `Markdown Editor v${APP_VERSION}`;
+    document.getElementById('aboutModal').classList.add('show');
+}
+
+function closeAbout() {
+    document.getElementById('aboutModal').classList.remove('show');
+}

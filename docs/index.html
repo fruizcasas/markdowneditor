@@ -243,6 +243,121 @@
             text-transform: uppercase;
             background: var(--bg-tertiary);
         }
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .modal-overlay.show { display: flex; }
+        .modal {
+            background: var(--bg-secondary);
+            border-radius: 16px;
+            max-width: 400px;
+            width: 100%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-header h2 { font-size: 18px; font-weight: 600; }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            padding: 4px;
+        }
+        .modal-body { padding: 20px; }
+        .about-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            display: block;
+            border: 3px solid var(--accent);
+        }
+        .about-name {
+            text-align: center;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        .about-role {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .about-section {
+            background: var(--bg-tertiary);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        .about-section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .about-credit {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+        }
+        .about-credit-icon { font-size: 28px; }
+        .about-credit-text { flex: 1; }
+        .about-credit-name { font-weight: 600; font-size: 14px; }
+        .about-credit-desc { font-size: 12px; color: var(--text-secondary); }
+        .about-version {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 12px;
+            margin-top: 16px;
+        }
+        .about-copyright {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 11px;
+            margin-top: 8px;
+        }
+        /* Style Editor Modal */
+        .se-section { margin-bottom: 16px; }
+        .se-section > label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 12px; color: var(--text-secondary); }
+        .se-section select { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-tertiary); color: var(--text-primary); }
+        .se-mode { display: flex; align-items: center; gap: 8px; }
+        .se-mode label { margin-bottom: 0; }
+        .se-mode .btn { padding: 6px 12px; font-size: 12px; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 4px; cursor: pointer; color: var(--text-secondary); }
+        .se-mode .btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+        .se-properties { max-height: 300px; overflow-y: auto; }
+        .se-prop { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding: 8px; background: var(--bg-tertiary); border-radius: 6px; }
+        .se-prop > label { width: 100px; font-size: 12px; color: var(--text-secondary); flex-shrink: 0; }
+        .se-prop input[type="text"], .se-prop select { flex: 1; padding: 6px 8px; border-radius: 4px; border: 1px solid var(--border); background: var(--bg-primary); color: var(--text-primary); font-size: 12px; }
+        .se-color-wrap { display: flex; gap: 6px; flex: 1; }
+        .se-color-wrap input[type="text"] { flex: 1; }
+        .se-color-wrap input[type="color"] { width: 32px; height: 32px; padding: 0; border: none; border-radius: 4px; cursor: pointer; }
+        .se-actions { display: flex; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+        .se-actions .btn { flex: 1; padding: 10px; border-radius: 6px; font-weight: 500; cursor: pointer; border: none; }
+        .se-actions .btn-primary { background: var(--accent); color: #fff; }
+        .se-actions .btn-secondary { background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border); }
     </style>
 </head>
 <body>
@@ -252,14 +367,20 @@
 
     <div class="toolbar">
         <div class="toolbar-group">
-            <button class="btn btn-icon" onclick="newDoc()" title="Nuevo">📄</button>
-            <button class="btn btn-icon" onclick="openFile()" title="Abrir">📂</button>
-            <button class="btn btn-icon" onclick="saveFile()" title="Guardar">💾</button>
-            <button class="btn btn-icon" onclick="shareContent()" title="Compartir">📤</button>
-        </div>
-        <div class="toolbar-separator hide-mobile"></div>
-        <div class="toolbar-group">
-            <button class="btn btn-icon" onclick="copyHtml()" title="Copiar HTML">📋</button>
+            <div class="dropdown">
+                <button class="btn btn-icon" onclick="toggleMenu()" title="Menu">☰</button>
+                <div class="dropdown-content" id="mainMenu">
+                    <div class="dropdown-header" data-i18n="menu.file">Archivo</div>
+                    <div class="dropdown-item" onclick="newDoc()">📄 <span data-i18n="menu.new">Nuevo</span></div>
+                    <div class="dropdown-item" onclick="openFile()">📂 <span data-i18n="menu.open">Abrir</span></div>
+                    <div class="dropdown-item" onclick="importWord()">📥 <span data-i18n="menu.importword">Importar Word</span></div>
+                    <div class="dropdown-item" onclick="saveFile()">💾 <span data-i18n="menu.save">Guardar</span></div>
+                    <div class="dropdown-item" onclick="shareContent()">📤 <span data-i18n="menu.share">Compartir</span></div>
+                    <div class="dropdown-item" onclick="copyHtml()">📋 <span data-i18n="menu.copyhtml">Copiar HTML</span></div>
+                    <div class="dropdown-header" data-i18n="menu.help">Ayuda</div>
+                    <div class="dropdown-item" onclick="showAbout()">ℹ️ <span data-i18n="menu.about">Acerca de</span></div>
+                </div>
+            </div>
         </div>
         <div class="toolbar-separator hide-mobile"></div>
         <div class="toolbar-group">
@@ -270,10 +391,8 @@
         </div>
         <div class="toolbar-separator hide-mobile"></div>
         <div class="toolbar-group">
-            <select id="styleSelect" onchange="changeStyle()">
-                <option value="gitlab">GitLab</option>
-                <option value="default">Por defecto</option>
-            </select>
+            <select id="styleSelect" onchange="changeStyle()"></select>
+            <button class="btn btn-icon" onclick="showStyleEditor()" title="Editor de estilos">🎨</button>
         </div>
         <div class="toolbar-group" style="margin-left: auto;">
             <select id="langSelect" onchange="changeLang()">
@@ -317,9 +436,69 @@
 
     <div class="toast" id="toast"></div>
     <input type="file" id="fileInput" accept=".md,.txt,.markdown" style="display:none">
+    <input type="file" id="wordInput" accept=".docx" style="display:none">
 
-    <!-- External library -->
+    <!-- About Modal -->
+    <div class="modal-overlay" id="aboutModal" onclick="if(event.target===this)closeAbout()">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 data-i18n="about.title">Acerca de</h2>
+                <button class="modal-close" onclick="closeAbout()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <img src="https://github.com/fruizcasas.png" alt="Avatar" class="about-avatar">
+                <div class="about-name">Fernando Ruiz Casas</div>
+                <div class="about-role" data-i18n="about.role">Desarrollador</div>
+
+                <div class="about-section">
+                    <div class="about-section-title" data-i18n="about.teammate">Teammate</div>
+                    <div class="about-credit">
+                        <div class="about-credit-icon">🗡️</div>
+                        <div class="about-credit-text">
+                            <div class="about-credit-name">Claudito Modo de Espadas</div>
+                            <div class="about-credit-desc">Claude Opus 4.5 (claude-opus-4-5-20251101)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-section">
+                    <div class="about-section-title" data-i18n="about.tech">Tecnologia</div>
+                    <div class="about-credit">
+                        <div class="about-credit-icon">⚡</div>
+                        <div class="about-credit-text">
+                            <div class="about-credit-name">PWA + Vanilla JS</div>
+                            <div class="about-credit-desc" data-i18n="about.offline">Funciona 100% offline</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="about-version" id="aboutVersion"></div>
+                <div class="about-copyright">© 2025 Fernando Ruiz Casas</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Style Editor Modal -->
+    <div class="modal-overlay" id="styleEditorModal" onclick="if(event.target===this)closeStyleEditor()">
+        <div class="modal" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2 data-i18n="style.editor">Editor de Estilos</h2>
+                <button class="modal-close" onclick="closeStyleEditor()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="styleEditorContent"></div>
+                <div class="se-actions">
+                    <button class="btn btn-secondary" onclick="closeStyleEditor()" data-i18n="style.cancel">Cancelar</button>
+                    <button class="btn btn-secondary" onclick="applyStyleEditor()" data-i18n="style.apply">Aplicar</button>
+                    <button class="btn btn-primary" onclick="saveStyleAs()" data-i18n="style.saveas">Guardar como...</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- External libraries -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mammoth/mammoth.browser.min.js"></script>
 
     <!-- App modules (order matters) -->
     <script src="js/config.js"></script>
