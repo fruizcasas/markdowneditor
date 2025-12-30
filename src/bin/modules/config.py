@@ -20,7 +20,7 @@ import json
 # =============================================================================
 
 APP_NAME = "Markdown Editor"
-APP_VERSION = "1.2.0"
+APP_VERSION = "1.3.0"
 
 # =============================================================================
 # PATHS / RUTAS
@@ -81,8 +81,8 @@ def _load_full_config():
         try:
             with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
                 return json.load(f)
-        except:
-            pass
+        except (json.JSONDecodeError, IOError, OSError):
+            pass  # Return empty config on error / Retorna config vacía en error
     return {}
 
 def _save_full_config(config):
@@ -91,7 +91,7 @@ def _save_full_config(config):
         with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
             json.dump(config, f, indent=2, ensure_ascii=False)
         return True
-    except:
+    except (IOError, OSError, TypeError):
         return False
 
 def load_ui_config():

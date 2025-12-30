@@ -12,6 +12,7 @@ Licensed under MIT License
 """
 
 import os
+import sys
 import subprocess
 import tempfile
 import webbrowser
@@ -19,6 +20,22 @@ from tkinter import messagebox, filedialog
 
 from .config import WKHTMLTOPDF_EXE, WKHTMLTOPDF_DIR, WKHTMLTOPDF_DOWNLOAD_URL
 from .i18n import t
+
+
+def _open_file(filepath):
+    """
+    Open file with system default application (cross-platform)
+    Abre archivo con aplicación por defecto del sistema (multiplataforma)
+    """
+    try:
+        if sys.platform == 'win32':
+            os.startfile(filepath)
+        elif sys.platform == 'darwin':  # macOS
+            subprocess.run(['open', filepath], check=False)
+        else:  # Linux and other Unix-like
+            subprocess.run(['xdg-open', filepath], check=False)
+    except Exception:
+        pass  # Silently fail if unable to open / Falla silenciosamente si no puede abrir
 
 
 def is_wkhtmltopdf_available():
@@ -140,8 +157,8 @@ def export_to_pdf(html_content, suggested_name=None, suggested_dir=None,
             filename = os.path.basename(filepath)
             if status_callback:
                 status_callback(f"{t('status.pdf_exported')}: {filename}")
-            
-            os.startfile(filepath)
+
+            _open_file(filepath)
             return True
         else:
             raise Exception(result.stderr)

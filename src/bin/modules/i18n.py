@@ -137,12 +137,29 @@ def get_language_flag_list():
 def _detect_system_language():
     """Detect system language / Detecta idioma del sistema"""
     try:
-        system_locale = locale.getdefaultlocale()[0]  # e.g. 'es_ES', 'en_US'
+        # Try multiple methods for compatibility with Python 3.11+
+        # Intenta múltiples métodos para compatibilidad con Python 3.11+
+        system_locale = None
+
+        # Method 1: Environment variables (most reliable)
+        for env_var in ('LC_ALL', 'LC_MESSAGES', 'LANG', 'LANGUAGE'):
+            system_locale = os.environ.get(env_var)
+            if system_locale:
+                break
+
+        # Method 2: locale.getlocale() as fallback
+        if not system_locale:
+            try:
+                system_locale = locale.getlocale()[0]
+            except (ValueError, AttributeError):
+                pass
+
         if system_locale:
-            lang_code = system_locale.split('_')[0]  # e.g. 'es', 'en'
+            # Extract language code: 'es_ES.UTF-8' -> 'es'
+            lang_code = system_locale.split('_')[0].split('.')[0]
             if lang_code in get_available_languages():
                 return lang_code
-    except:
+    except Exception:
         pass
     return "en"
 
