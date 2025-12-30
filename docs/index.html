@@ -154,6 +154,23 @@
             cursor: pointer;
             min-height: 44px;
         }
+        /* Scroll sync toggle */
+        .sync-toggle {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--bg-tertiary);
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            min-height: 44px;
+            font-size: 18px;
+            transition: all 0.2s;
+        }
+        .sync-toggle:hover { background: var(--accent); }
+        .sync-toggle input { display: none; }
+        .sync-toggle span { opacity: 0.5; transition: opacity 0.2s; }
+        .sync-toggle input:checked + span { opacity: 1; }
         /* Main content */
         .main { display: flex; flex: 1; overflow: hidden; min-height: 0; }
         .panel { flex: 1; display: flex; flex-direction: column; min-width: 0; transition: flex 0.3s; }
@@ -475,6 +492,14 @@
         <div class="toolbar-group">
             <select id="styleSelect" onchange="changeStyle()"></select>
             <button class="btn btn-icon" onclick="showStyleEditor()" title="Editor de estilos">🎨</button>
+        </div>
+        <div class="toolbar-separator hide-mobile"></div>
+        <div class="toolbar-group hide-mobile">
+            <label class="sync-toggle" title="Scroll sincronizado">
+                <input type="checkbox" id="scrollSyncCheckbox" checked onchange="toggleScrollSync()">
+                <span>🔗</span>
+            </label>
+            <button class="btn btn-icon" onclick="manualScrollSync()" title="Sincronizar ahora">⟳</button>
         </div>
         <div class="toolbar-group" style="margin-left: auto;">
             <select id="langSelect" onchange="changeLang()">

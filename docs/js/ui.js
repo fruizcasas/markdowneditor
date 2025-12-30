@@ -10,6 +10,7 @@ function showToast(msg, isUpdate = false) {
 // Store scroll position between panels
 let lastScrollPercent = 0;
 let isScrollSyncing = false; // Prevent infinite scroll loops
+let scrollSyncEnabled = true; // Toggle for scroll sync
 
 // ========== REAL-TIME SCROLL SYNC ==========
 
@@ -19,6 +20,7 @@ function initScrollSync() {
 
     // Sync editor scroll to preview
     editor.addEventListener('scroll', () => {
+        if (!scrollSyncEnabled) return;
         if (isScrollSyncing) return;
         if (window.innerWidth <= 768) return; // Only sync in dual-pane mode
 
@@ -36,6 +38,7 @@ function initScrollSync() {
             if (!doc) return;
 
             doc.addEventListener('scroll', () => {
+                if (!scrollSyncEnabled) return;
                 if (isScrollSyncing) return;
                 if (window.innerWidth <= 768) return;
 
@@ -48,6 +51,22 @@ function initScrollSync() {
             });
         } catch (e) {}
     });
+}
+
+function toggleScrollSync() {
+    const checkbox = document.getElementById('scrollSyncCheckbox');
+    scrollSyncEnabled = checkbox.checked;
+}
+
+function manualScrollSync() {
+    // Sync preview to current editor position
+    const editor = document.getElementById('editor');
+    const maxScroll = editor.scrollHeight - editor.clientHeight;
+    if (maxScroll <= 0) return;
+
+    const percent = editor.scrollTop / maxScroll;
+    syncPreviewScroll(percent);
+    showToast(scrollSyncEnabled ? '🔗 Sincronizado' : '🔗 Sincronizado (auto desactivado)');
 }
 
 function syncPreviewScroll(percent) {
