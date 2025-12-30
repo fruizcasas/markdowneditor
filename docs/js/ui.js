@@ -254,28 +254,33 @@ function fallbackCopy(text) {
 
 function toggleMenu() {
     const menu = document.getElementById('mainMenu');
+    const wasOpen = menu.classList.contains('show');
     closeAllDropdowns();
-    menu.classList.toggle('show');
-
-    if (menu.classList.contains('show')) {
-        setTimeout(() => {
-            document.addEventListener('click', closeMenuOnClickOutside);
-        }, 10);
-    }
-}
-
-function closeMenuOnClickOutside(e) {
-    const menu = document.getElementById('mainMenu');
-    const btn = e.target.closest('.dropdown');
-    if (!btn || !btn.contains(menu)) {
-        menu.classList.remove('show');
-        document.removeEventListener('click', closeMenuOnClickOutside);
+    if (!wasOpen) {
+        menu.classList.add('show');
     }
 }
 
 function closeAllDropdowns() {
     document.querySelectorAll('.dropdown-content').forEach(d => d.classList.remove('show'));
 }
+
+// Global click handler to close dropdowns when clicking outside
+document.addEventListener('click', (e) => {
+    // Check if click is inside a dropdown or its toggle button
+    const dropdown = e.target.closest('.dropdown');
+    if (!dropdown) {
+        // Click outside any dropdown - close all
+        closeAllDropdowns();
+    }
+});
+
+// Also close on Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeAllDropdowns();
+    }
+});
 
 // ========== ABOUT MODAL ==========
 

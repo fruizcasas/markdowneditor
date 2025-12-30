@@ -39,22 +39,10 @@ function buildSnippetsMenu() {
 
 function toggleSnippets() {
     const menu = document.getElementById('snippetsMenu');
-    menu.classList.toggle('show');
-
-    // Close when clicking outside
-    if (menu.classList.contains('show')) {
-        setTimeout(() => {
-            document.addEventListener('click', closeSnippetsOnClickOutside);
-        }, 10);
-    }
-}
-
-function closeSnippetsOnClickOutside(e) {
-    const menu = document.getElementById('snippetsMenu');
-    const btn = e.target.closest('.dropdown');
-    if (!btn) {
-        menu.classList.remove('show');
-        document.removeEventListener('click', closeSnippetsOnClickOutside);
+    const wasOpen = menu.classList.contains('show');
+    closeAllDropdowns();
+    if (!wasOpen) {
+        menu.classList.add('show');
     }
 }
 
