@@ -388,6 +388,26 @@
             color: var(--text-secondary);
             text-transform: uppercase;
             background: var(--bg-tertiary);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .dropdown-header:hover { background: var(--accent); color: white; }
+        .dropdown-header::after {
+            content: '▶';
+            font-size: 10px;
+            transition: transform 0.2s;
+        }
+        .dropdown-header.open::after { transform: rotate(90deg); }
+        .submenu {
+            display: none;
+            background: var(--bg-primary);
+        }
+        .submenu.open { display: block; }
+        .submenu .dropdown-item {
+            padding-left: 28px;
+            font-size: 15px;
         }
         .menu-lang {
             display: flex;
@@ -535,30 +555,38 @@
             <div class="dropdown">
                 <button class="btn btn-icon" onclick="toggleMenu()" title="Menu">☰</button>
                 <div class="dropdown-content" id="mainMenu">
-                    <div class="dropdown-header" data-i18n="menu.file">Archivo</div>
-                    <div class="dropdown-item" onclick="newDoc()">📄 <span data-i18n="menu.new">Nuevo</span></div>
-                    <div class="dropdown-item" onclick="openFile()">📂 <span data-i18n="menu.open">Abrir</span></div>
-                    <div class="dropdown-item" onclick="importWord()">📥 <span data-i18n="menu.importword">Importar Word</span></div>
-                    <div class="dropdown-item" onclick="saveFile()">💾 <span data-i18n="menu.save">Guardar</span></div>
-                    <div class="dropdown-item" onclick="shareContent()">📤 <span data-i18n="menu.share">Compartir</span></div>
-                    <div class="dropdown-item" onclick="copyHtml()">📋 <span data-i18n="menu.copyhtml">Copiar HTML</span></div>
-                    <div class="dropdown-header" data-i18n="menu.edit">Editar</div>
-                    <div class="dropdown-item" onclick="editorSelectAll()">✓ <span data-i18n="menu.selectall">Seleccionar todo</span></div>
-                    <div class="dropdown-item" onclick="editorCut()">✂️ <span data-i18n="menu.cut">Cortar</span></div>
-                    <div class="dropdown-item" onclick="editorCopy()">📄 <span data-i18n="menu.copy">Copiar</span></div>
-                    <div class="dropdown-item" onclick="editorPaste()">📋 <span data-i18n="menu.paste">Pegar</span></div>
-                    <div class="dropdown-header" data-i18n="menu.settings">Ajustes</div>
-                    <div class="dropdown-item" onclick="showStyleEditor()">🎨 <span data-i18n="menu.styleeditor">Editor de estilos</span></div>
-                    <div class="dropdown-item" onclick="toggleThemeFromMenu()"><span id="themeMenuIcon">🌙</span> <span data-i18n="menu.theme" id="themeMenuText">Tema oscuro</span></div>
-                    <div class="dropdown-item menu-lang">
-                        <span>🌐</span>
-                        <select id="langSelectMenu" onchange="changeLangFromMenu()">
-                            <option value="es">Español</option>
-                            <option value="en">English</option>
-                        </select>
+                    <div class="dropdown-header" onclick="toggleSubmenu(this)" data-i18n="menu.file">Archivo</div>
+                    <div class="submenu">
+                        <div class="dropdown-item" onclick="newDoc()">📄 <span data-i18n="menu.new">Nuevo</span></div>
+                        <div class="dropdown-item" onclick="openFile()">📂 <span data-i18n="menu.open">Abrir</span></div>
+                        <div class="dropdown-item" onclick="importWord()">📥 <span data-i18n="menu.importword">Importar Word</span></div>
+                        <div class="dropdown-item" onclick="saveFile()">💾 <span data-i18n="menu.save">Guardar</span></div>
+                        <div class="dropdown-item" onclick="shareContent()">📤 <span data-i18n="menu.share">Compartir</span></div>
+                        <div class="dropdown-item" onclick="copyHtml()">📋 <span data-i18n="menu.copyhtml">Copiar HTML</span></div>
                     </div>
-                    <div class="dropdown-header" data-i18n="menu.help">Ayuda</div>
-                    <div class="dropdown-item" onclick="showAbout()">ℹ️ <span data-i18n="menu.about">Acerca de</span></div>
+                    <div class="dropdown-header" onclick="toggleSubmenu(this)" data-i18n="menu.edit">Editar</div>
+                    <div class="submenu">
+                        <div class="dropdown-item" onclick="editorSelectAll()">✓ <span data-i18n="menu.selectall">Seleccionar todo</span></div>
+                        <div class="dropdown-item" onclick="editorCut()">✂️ <span data-i18n="menu.cut">Cortar</span></div>
+                        <div class="dropdown-item" onclick="editorCopy()">📄 <span data-i18n="menu.copy">Copiar</span></div>
+                        <div class="dropdown-item" onclick="editorPaste()">📋 <span data-i18n="menu.paste">Pegar</span></div>
+                    </div>
+                    <div class="dropdown-header" onclick="toggleSubmenu(this)" data-i18n="menu.settings">Ajustes</div>
+                    <div class="submenu">
+                        <div class="dropdown-item" onclick="showStyleEditor()">🎨 <span data-i18n="menu.styleeditor">Editor de estilos</span></div>
+                        <div class="dropdown-item" onclick="toggleThemeFromMenu()"><span id="themeMenuIcon">🌙</span> <span id="themeMenuText">Tema oscuro</span></div>
+                        <div class="dropdown-item menu-lang">
+                            <span>🌐</span>
+                            <select id="langSelectMenu" onchange="changeLangFromMenu()">
+                                <option value="es">Español</option>
+                                <option value="en">English</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="dropdown-header" onclick="toggleSubmenu(this)" data-i18n="menu.help">Ayuda</div>
+                    <div class="submenu">
+                        <div class="dropdown-item" onclick="showAbout()">ℹ️ <span data-i18n="menu.about">Acerca de</span></div>
+                    </div>
                 </div>
             </div>
         </div>
