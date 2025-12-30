@@ -39,13 +39,13 @@
         }
         /* Keep toolbar buttons with dark theme for emoji visibility */
         .light-theme .btn-icon,
-        .light-theme .kb-btn {
+        .light-theme .keyboard-bar .kb-btn {
             background: #0f3460;
             color: #eaeaea;
         }
         .light-theme .btn-icon:hover,
         .light-theme .btn-icon:active,
-        .light-theme .kb-btn:active {
+        .light-theme .keyboard-bar .kb-btn:active {
             background: #e94560;
         }
         .light-theme select {
@@ -482,6 +482,8 @@
                     <div class="dropdown-item" onclick="saveFile()">💾 <span data-i18n="menu.save">Guardar</span></div>
                     <div class="dropdown-item" onclick="shareContent()">📤 <span data-i18n="menu.share">Compartir</span></div>
                     <div class="dropdown-item" onclick="copyHtml()">📋 <span data-i18n="menu.copyhtml">Copiar HTML</span></div>
+                    <div class="dropdown-header" data-i18n="menu.tools">Herramientas</div>
+                    <div class="dropdown-item" onclick="showStyleEditor()">🎨 <span data-i18n="menu.styleeditor">Editor de estilos</span></div>
                     <div class="dropdown-header" data-i18n="menu.help">Ayuda</div>
                     <div class="dropdown-item" onclick="showAbout()">ℹ️ <span data-i18n="menu.about">Acerca de</span></div>
                 </div>
@@ -497,7 +499,6 @@
         <div class="toolbar-separator hide-mobile"></div>
         <div class="toolbar-group">
             <select id="styleSelect" onchange="changeStyle()"></select>
-            <button class="btn btn-icon" onclick="showStyleEditor()" title="Editor de estilos">🎨</button>
         </div>
         <div class="toolbar-group" style="margin-left: auto;">
             <select id="langSelect" onchange="changeLang()">
