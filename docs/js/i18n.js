@@ -70,7 +70,8 @@ const i18n = {
         "style.saveas": "Guardar como...",
         "style.applied": "Estilo aplicado",
         "style.saved": "Estilo guardado",
-        "style.entername": "Nombre del estilo:"
+        "style.entername": "Nombre del estilo:",
+        "keyboard.done": "OK"
     },
     en: {
         "panel.editor": "Markdown Editor",
@@ -142,7 +143,8 @@ const i18n = {
         "style.saveas": "Save as...",
         "style.applied": "Style applied",
         "style.saved": "Style saved",
-        "style.entername": "Style name:"
+        "style.entername": "Style name:",
+        "keyboard.done": "Done"
     }
 };
 

@@ -121,3 +121,49 @@ function showAbout() {
 function closeAbout() {
     document.getElementById('aboutModal').classList.remove('show');
 }
+
+// ========== KEYBOARD ACCESSORY BAR ==========
+
+function showKeyboardBar() {
+    // Only show on mobile
+    if (window.innerWidth <= 768) {
+        document.getElementById('keyboardBar').classList.add('show');
+    }
+}
+
+function hideKeyboardBar() {
+    document.getElementById('keyboardBar').classList.remove('show');
+}
+
+function hideKeyboard() {
+    document.getElementById('editor').blur();
+    hideKeyboardBar();
+}
+
+function showKeyboardSnippets() {
+    // Show snippets menu as a modal on mobile when keyboard is active
+    toggleSnippets();
+}
+
+function showKeyboardStyles() {
+    // Show style editor
+    showStyleEditor();
+}
+
+// Setup keyboard bar events
+function initKeyboardBar() {
+    const editor = document.getElementById('editor');
+
+    editor.addEventListener('focus', () => {
+        showKeyboardBar();
+    });
+
+    editor.addEventListener('blur', () => {
+        // Small delay to allow button clicks to register
+        setTimeout(() => {
+            if (document.activeElement !== editor) {
+                hideKeyboardBar();
+            }
+        }, 150);
+    });
+}
