@@ -60,7 +60,8 @@ function initDivider() {
 
 function updatePreview() {
     const html = marked.parse(editor.value);
-    const fullHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>${styles[currentStyle]}</style></head><body>${html}</body></html>`;
+    const zoomCSS = typeof getPreviewZoomCSS === 'function' ? getPreviewZoomCSS() : '';
+    const fullHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>${styles[currentStyle]}${zoomCSS}</style></head><body>${html}</body></html>`;
     preview.srcdoc = fullHtml;
 }
 
