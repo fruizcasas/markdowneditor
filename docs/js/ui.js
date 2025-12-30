@@ -124,15 +124,30 @@ function closeAbout() {
 
 // ========== KEYBOARD ACCESSORY BAR ==========
 
+function updateKeyboardBarPosition() {
+    const bar = document.getElementById('keyboardBar');
+    if (!bar.classList.contains('show')) return;
+
+    if (window.visualViewport) {
+        // Calculate keyboard height using visualViewport
+        const keyboardHeight = window.innerHeight - window.visualViewport.height;
+        bar.style.bottom = keyboardHeight + 'px';
+    }
+}
+
 function showKeyboardBar() {
     // Only show on mobile
     if (window.innerWidth <= 768) {
-        document.getElementById('keyboardBar').classList.add('show');
+        const bar = document.getElementById('keyboardBar');
+        bar.classList.add('show');
+        updateKeyboardBarPosition();
     }
 }
 
 function hideKeyboardBar() {
-    document.getElementById('keyboardBar').classList.remove('show');
+    const bar = document.getElementById('keyboardBar');
+    bar.classList.remove('show');
+    bar.style.bottom = '0';
 }
 
 function hideKeyboard() {
@@ -166,4 +181,10 @@ function initKeyboardBar() {
             }
         }, 150);
     });
+
+    // Update position when visualViewport changes (keyboard opens/closes)
+    if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', updateKeyboardBarPosition);
+        window.visualViewport.addEventListener('scroll', updateKeyboardBarPosition);
+    }
 }
