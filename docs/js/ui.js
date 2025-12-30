@@ -418,6 +418,23 @@ function editorPaste() {
     closeAllDropdowns();
 }
 
+function editorUndo() {
+    document.getElementById('editor').focus();
+    document.execCommand('undo');
+    closeAllDropdowns();
+}
+
+function editorClear() {
+    const editor = document.getElementById('editor');
+    if (confirm(t('confirm.clear'))) {
+        editor.value = '';
+        updatePreview();
+        updateCharCount();
+        autoSave();
+    }
+    closeAllDropdowns();
+}
+
 // ========== MENU ==========
 
 function toggleMenu() {
@@ -426,7 +443,28 @@ function toggleMenu() {
     closeAllDropdowns();
     if (!wasOpen) {
         menu.classList.add('show');
+        // Close all submenus when opening menu
+        closeAllSubmenus();
     }
+}
+
+function toggleSubmenu(header) {
+    const submenu = header.nextElementSibling;
+    const wasOpen = header.classList.contains('open');
+
+    // Close all other submenus
+    closeAllSubmenus();
+
+    // Toggle this submenu
+    if (!wasOpen) {
+        header.classList.add('open');
+        submenu.classList.add('open');
+    }
+}
+
+function closeAllSubmenus() {
+    document.querySelectorAll('.dropdown-header.open').forEach(h => h.classList.remove('open'));
+    document.querySelectorAll('.submenu.open').forEach(s => s.classList.remove('open'));
 }
 
 function closeAllDropdowns() {
