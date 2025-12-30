@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#1a1a2e">
+    <title>Markdown Editor</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        :root {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-tertiary: #0f3460;
+            --text-primary: #eaeaea;
+            --text-secondary: #a0a0a0;
+            --accent: #e94560;
+            --border: #2a2a4a;
+        }
+        .light-theme {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f5;
+            --bg-tertiary: #e8e8e8;
+            --text-primary: #1a1a1a;
+            --text-secondary: #666666;
+            --accent: #e94560;
+            --border: #ddd;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        /* Toolbar */
+        .toolbar {
+            background: var(--bg-secondary);
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+        .toolbar-group {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+        .toolbar-separator {
+            width: 1px;
+            height: 24px;
+            background: var(--border);
+            margin: 0 8px;
+        }
+        .btn {
+            background: var(--bg-tertiary);
+            border: none;
+            color: var(--text-primary);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.2s;
+        }
+        .btn:hover { background: var(--accent); }
+        .btn:active { transform: scale(0.95); }
+        .btn-icon { padding: 8px 10px; font-size: 16px; }
+        select {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        /* Main content */
+        .main {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+        .panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+        .panel-header {
+            background: var(--bg-secondary);
+            padding: 8px 12px;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .editor-container, .preview-container {
+            flex: 1;
+            overflow: hidden;
+            display: flex;
+        }
+        #editor {
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border: none;
+            padding: 16px;
+            font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            resize: none;
+            outline: none;
+        }
+        #preview {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #fff;
+        }
+        .divider {
+            width: 4px;
+            background: var(--border);
+            cursor: col-resize;
+        }
+        .divider:hover { background: var(--accent); }
+        /* Status bar */
+        .status-bar {
+            background: var(--bg-secondary);
+            padding: 6px 12px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+        }
+        /* Mobile */
+        .tabs {
+            display: none;
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+        }
+        .tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        .tab.active {
+            border-bottom-color: var(--accent);
+            color: var(--accent);
+        }
+        @media (max-width: 768px) {
+            .toolbar { padding: 6px 8px; gap: 4px; }
+            .btn { padding: 6px 8px; font-size: 13px; }
+            .toolbar-separator { display: none; }
+            .hide-mobile { display: none !important; }
+            .tabs { display: flex; }
+            .main { flex-direction: column; }
+            .panel { display: none; }
+            .panel.active { display: flex; }
+            .divider { display: none; }
+        }
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 1000;
+        }
+        .toast.show { opacity: 1; }
+    </style>
+</head>
+<body>
+    <div class="toolbar">
+        <div class="toolbar-group">
+            <button class="btn btn-icon" onclick="newDoc()" title="Nuevo">📄</button>
+            <button class="btn btn-icon" onclick="openFile()" title="Abrir">📂</button>
+            <button class="btn btn-icon" onclick="saveFile()" title="Guardar">💾</button>
+        </div>
+        <div class="toolbar-separator hide-mobile"></div>
+        <div class="toolbar-group">
+            <button class="btn btn-icon" onclick="copyHtml()" title="Copiar HTML">📋</button>
+        </div>
+        <div class="toolbar-separator hide-mobile"></div>
+        <div class="toolbar-group">
+            <select id="styleSelect" onchange="changeStyle()">
+                <option value="gitlab">GitLab</option>
+                <option value="default">Por defecto</option>
+            </select>
+        </div>
+        <div class="toolbar-group" style="margin-left: auto;">
+            <select id="langSelect" onchange="changeLang()">
+                <option value="es">🇪🇸 ES</option>
+                <option value="en">🇬🇧 EN</option>
+            </select>
+            <button class="btn btn-icon" onclick="toggleTheme()" title="Tema">🌙</button>
+        </div>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" onclick="showPanel('editor')" data-i18n="panel.editor">Editor</div>
+        <div class="tab" onclick="showPanel('preview')" data-i18n="panel.preview">Vista previa</div>
+    </div>
+
+    <div class="main">
+        <div class="panel active" id="editorPanel">
+            <div class="panel-header">
+                <span data-i18n="panel.editor">Editor Markdown</span>
+            </div>
+            <div class="editor-container">
+                <textarea id="editor" spellcheck="false"></textarea>
+            </div>
+        </div>
+        <div class="divider" id="divider"></div>
+        <div class="panel" id="previewPanel">
+            <div class="panel-header">
+                <span data-i18n="panel.preview">Vista previa</span>
+            </div>
+            <div class="preview-container">
+                <iframe id="preview"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div class="status-bar">
+        <span id="status" data-i18n="status.ready">Listo</span>
+        <span id="charCount">0 caracteres</span>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <input type="file" id="fileInput" accept=".md,.txt,.markdown" style="display:none">
+
+    <!-- marked.js minificado -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <script>
+    // ========== TRANSLATIONS ==========
+    const i18n = {
+        es: {
+            "panel.editor": "Editor Markdown",
+            "panel.preview": "Vista previa",
+            "status.ready": "Listo",
+            "status.copied": "HTML copiado al portapapeles",
+            "status.saved": "Archivo guardado",
+            "status.opened": "Archivo abierto",
+            "status.new": "Nuevo documento",
+            "chars": "caracteres"
+        },
+        en: {
+            "panel.editor": "Markdown Editor",
+            "panel.preview": "Preview",
+            "status.ready": "Ready",
+            "status.copied": "HTML copied to clipboard",
+            "status.saved": "File saved",
+            "status.opened": "File opened",
+            "status.new": "New document",
+            "chars": "characters"
+        }
+    };
+    let currentLang = 'es';
+
+    function t(key) {
+        return i18n[currentLang][key] || key;
+    }
+
+    function updateTexts() {
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            el.textContent = t(el.dataset.i18n);
+        });
+        updateCharCount();
+    }
+
+    function changeLang() {
+        currentLang = document.getElementById('langSelect').value;
+        updateTexts();
+    }
+
+    // ========== STYLES ==========
+    const styles = {
+        gitlab: `
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 16px; line-height: 1.6; color: #303030; background: #fff; padding: 20px 40px; max-width: 900px; margin: 0 auto; }
+            h1 { font-size: 2em; font-weight: 600; border-bottom: 1px solid #e5e5e5; padding-bottom: 0.3em; margin: 1.5em 0 0.75em; color: #1f1f1f; }
+            h2 { font-size: 1.5em; font-weight: 600; border-bottom: 1px solid #e5e5e5; padding-bottom: 0.3em; margin: 1.5em 0 0.75em; color: #1f1f1f; }
+            h3 { font-size: 1.25em; font-weight: 600; margin: 1.5em 0 0.5em; color: #1f1f1f; }
+            p { margin: 0 0 1em; }
+            a { color: #1068bf; text-decoration: none; }
+            code { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 0.9em; background: #f5f5f5; padding: 0.2em 0.4em; border-radius: 4px; color: #d14; }
+            pre { font-family: 'JetBrains Mono', Consolas, monospace; font-size: 0.9em; background: #f6f8fa; border: 1px solid #e5e5e5; border-radius: 6px; padding: 16px; overflow-x: auto; }
+            pre code { background: transparent; padding: 0; color: #303030; }
+            blockquote { margin: 1em 0; padding: 0.5em 1em; border-left: 4px solid #dbdbdb; background: #fafafa; color: #666; }
+            ul, ol { margin: 0 0 1em; padding-left: 2em; }
+            li { margin-bottom: 0.25em; }
+            table { border-collapse: collapse; width: 100%; margin: 1em 0; }
+            th { background: #f6f8fa; border: 1px solid #e5e5e5; padding: 10px 12px; text-align: left; font-weight: 600; }
+            td { border: 1px solid #e5e5e5; padding: 10px 12px; }
+            tr:nth-child(even) { background: #fafafa; }
+            hr { border: none; border-top: 1px solid #e5e5e5; margin: 2em 0; }
+            img { max-width: 100%; height: auto; }
+            .callout-note { background: #e7f3ff; border-left: 4px solid #0066cc; padding: 12px 16px; margin: 16px 0; border-radius: 0 6px 6px 0; }
+            .callout-warning { background: #fff8e6; border-left: 4px solid #f0ad4e; padding: 12px 16px; margin: 16px 0; border-radius: 0 6px 6px 0; }
+            .callout-important { background: #ffeaea; border-left: 4px solid #dc3545; padding: 12px 16px; margin: 16px 0; border-radius: 0 6px 6px 0; }
+        `,
+        default: `
+            body { font-family: 'Segoe UI', Arial, sans-serif; font-size: 14px; line-height: 1.6; color: #333; background: #fff; margin: 20px; }
+            h1 { font-size: 28px; font-weight: 600; color: #1a1a1a; margin: 24px 0 16px; border-bottom: 2px solid #e0e0e0; padding-bottom: 8px; }
+            h2 { font-size: 22px; font-weight: 600; color: #2a2a2a; margin: 20px 0 12px; border-bottom: 1px solid #e8e8e8; padding-bottom: 6px; }
+            h3 { font-size: 18px; font-weight: 600; color: #3a3a3a; margin: 16px 0 10px; }
+            p { margin: 0 0 12px; }
+            a { color: #0066cc; text-decoration: underline; }
+            code { font-family: Consolas, Monaco, monospace; font-size: 13px; color: #c7254e; background: #f9f2f4; padding: 2px 6px; border-radius: 3px; }
+            pre { font-family: Consolas, Monaco, monospace; font-size: 13px; color: #333; background: #f5f5f5; padding: 16px; border-radius: 6px; border: 1px solid #e0e0e0; overflow-x: auto; }
+            blockquote { font-style: italic; color: #555; background: #f8f9fa; border-left: 4px solid #6c757d; margin: 16px 0; padding: 12px 20px; }
+            ul, ol { margin: 8px 0 12px; padding-left: 24px; }
+            li { margin-bottom: 4px; }
+            table { border-collapse: collapse; width: 100%; margin: 12px 0 16px; }
+            th { font-weight: 600; color: #fff; background: #4a5568; border: 1px solid #cbd5e0; padding: 10px 12px; text-align: left; }
+            td { border: 1px solid #e2e8f0; padding: 8px 12px; }
+            hr { border: none; border-top: 1px solid #e0e0e0; margin: 24px 0; }
+            img { max-width: 100%; height: auto; }
+            .callout-note { background: #e7f3ff; border-left: 4px solid #0066cc; padding: 12px 16px; margin: 16px 0; border-radius: 0 6px 6px 0; }
+            .callout-warning { background: #fff8e6; border-left: 4px solid #f0ad4e; padding: 12px 16px; margin: 16px 0; border-radius: 0 6px 6px 0; }
+            .callout-important { background: #ffeaea; border-left: 4px solid #dc3545; padding: 12px 16px; margin: 16px 0; border-radius: 0 6px 6px 0; }
+        `
+    };
+    let currentStyle = 'gitlab';
+
+    // ========== EDITOR ==========
+    const editor = document.getElementById('editor');
+    const preview = document.getElementById('preview');
+    let updateTimeout;
+
+    const exampleDoc = `# Documento de Ejemplo
+
+Este es un documento de prueba para ver las capacidades del editor.
+
+## Formato de Texto
+
+Puedes usar **negrita**, *cursiva*, o ~~tachado~~ según necesites.
+
+También puedes incluir \`código inline\` dentro del texto.
+
+## Listas
+
+### Lista con viñetas
+- Elemento 1
+- Elemento 2
+- Elemento 3
+
+### Lista numerada
+1. Primer paso
+2. Segundo paso
+3. Tercer paso
+
+## Tabla de Datos
+
+| Producto | Cantidad | Precio |
+|----------|----------|--------|
+| Widget A | 100      | €25.00 |
+| Widget B | 50       | €45.00 |
+| Widget C | 200      | €12.50 |
+
+## Bloque de Código
+
+\`\`\`javascript
+function saludar(nombre) {
+    return \`Hola, \${nombre}!\`;
+}
+\`\`\`
+
+## Cita
+
+> "La simplicidad es la máxima sofisticación."
+> — Leonardo da Vinci
+
+## Callouts
+
+<div class="callout-note">
+
+**Nota:** Información adicional que puede ser útil.
+
+</div>
+
+<div class="callout-warning">
+
+**Advertencia:** Precaución, hay algo importante aquí.
+
+</div>
+
+<div class="callout-important">
+
+**Importante:** Atención crítica requerida.
+
+</div>
+
+---
+
+*Documento generado con Markdown Editor Web*
+`;
+
+    function init() {
+        editor.value = exampleDoc;
+        updatePreview();
+        updateCharCount();
+
+        editor.addEventListener('input', () => {
+            clearTimeout(updateTimeout);
+            updateTimeout = setTimeout(updatePreview, 300);
+            updateCharCount();
+        });
+
+        // Divider drag
+        const divider = document.getElementById('divider');
+        let isDragging = false;
+        divider.addEventListener('mousedown', () => isDragging = true);
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const container = document.querySelector('.main');
+            const rect = container.getBoundingClientRect();
+            const percent = ((e.clientX - rect.left) / rect.width) * 100;
+            document.getElementById('editorPanel').style.flex = `0 0 ${percent}%`;
+            document.getElementById('previewPanel').style.flex = `0 0 ${100 - percent}%`;
+        });
+        document.addEventListener('mouseup', () => isDragging = false);
+
+        // File input
+        document.getElementById('fileInput').addEventListener('change', handleFileOpen);
+
+        // Show both panels on desktop
+        if (window.innerWidth > 768) {
+            document.getElementById('previewPanel').classList.add('active');
+        }
+    }
+
+    function updatePreview() {
+        const html = marked.parse(editor.value);
+        const fullHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>${styles[currentStyle]}</style></head><body>${html}</body></html>`;
+        preview.srcdoc = fullHtml;
+    }
+
+    function updateCharCount() {
+        document.getElementById('charCount').textContent = `${editor.value.length} ${t('chars')}`;
+    }
+
+    function changeStyle() {
+        currentStyle = document.getElementById('styleSelect').value;
+        updatePreview();
+    }
+
+    // ========== ACTIONS ==========
+    function newDoc() {
+        if (confirm('¿Crear nuevo documento? Se perderán los cambios no guardados.')) {
+            editor.value = '';
+            updatePreview();
+            updateCharCount();
+            showToast(t('status.new'));
+        }
+    }
+
+    function openFile() {
+        document.getElementById('fileInput').click();
+    }
+
+    function handleFileOpen(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            editor.value = event.target.result;
+            updatePreview();
+            updateCharCount();
+            showToast(t('status.opened') + ': ' + file.name);
+        };
+        reader.readAsText(file);
+        e.target.value = '';
+    }
+
+    function saveFile() {
+        const blob = new Blob([editor.value], { type: 'text/markdown' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'documento.md';
+        a.click();
+        URL.revokeObjectURL(url);
+        showToast(t('status.saved'));
+    }
+
+    function copyHtml() {
+        const html = marked.parse(editor.value);
+        const fullHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>${styles[currentStyle]}</style></head><body>${html}</body></html>`;
+        navigator.clipboard.writeText(fullHtml).then(() => {
+            showToast(t('status.copied'));
+        }).catch(() => {
+            // Fallback
+            const ta = document.createElement('textarea');
+            ta.value = fullHtml;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+            showToast(t('status.copied'));
+        });
+    }
+
+    function toggleTheme() {
+        document.body.classList.toggle('light-theme');
+        const btn = event.target;
+        btn.textContent = document.body.classList.contains('light-theme') ? '☀️' : '🌙';
+    }
+
+    function showPanel(panel) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+        event.target.classList.add('active');
+        document.getElementById(panel + 'Panel').classList.add('active');
+        if (panel === 'preview') updatePreview();
+    }
+
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        toast.textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    // Init
+    document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
