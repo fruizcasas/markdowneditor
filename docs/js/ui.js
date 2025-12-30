@@ -267,9 +267,10 @@ function closeAllDropdowns() {
 
 // Global click handler to close dropdowns when clicking outside
 document.addEventListener('click', (e) => {
-    // Check if click is inside a dropdown or its toggle button
+    // Check if click is inside a dropdown, its toggle button, or keyboard bar
     const dropdown = e.target.closest('.dropdown');
-    if (!dropdown) {
+    const keyboardBar = e.target.closest('.keyboard-bar');
+    if (!dropdown && !keyboardBar) {
         // Click outside any dropdown - close all
         closeAllDropdowns();
     }
