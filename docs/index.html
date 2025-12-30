@@ -389,6 +389,20 @@
             text-transform: uppercase;
             background: var(--bg-tertiary);
         }
+        .menu-lang {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .menu-lang select {
+            flex: 1;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 15px;
+        }
         /* Modal */
         .modal-overlay {
             display: none;
@@ -529,12 +543,20 @@
                     <div class="dropdown-item" onclick="shareContent()">📤 <span data-i18n="menu.share">Compartir</span></div>
                     <div class="dropdown-item" onclick="copyHtml()">📋 <span data-i18n="menu.copyhtml">Copiar HTML</span></div>
                     <div class="dropdown-header" data-i18n="menu.edit">Editar</div>
-                    <div class="dropdown-item" onclick="editorSelectAll()">📋 <span data-i18n="menu.selectall">Seleccionar todo</span></div>
+                    <div class="dropdown-item" onclick="editorSelectAll()">✓ <span data-i18n="menu.selectall">Seleccionar todo</span></div>
                     <div class="dropdown-item" onclick="editorCut()">✂️ <span data-i18n="menu.cut">Cortar</span></div>
                     <div class="dropdown-item" onclick="editorCopy()">📄 <span data-i18n="menu.copy">Copiar</span></div>
-                    <div class="dropdown-item" onclick="editorPaste()">📥 <span data-i18n="menu.paste">Pegar</span></div>
-                    <div class="dropdown-header" data-i18n="menu.tools">Herramientas</div>
+                    <div class="dropdown-item" onclick="editorPaste()">📋 <span data-i18n="menu.paste">Pegar</span></div>
+                    <div class="dropdown-header" data-i18n="menu.settings">Ajustes</div>
                     <div class="dropdown-item" onclick="showStyleEditor()">🎨 <span data-i18n="menu.styleeditor">Editor de estilos</span></div>
+                    <div class="dropdown-item" onclick="toggleThemeFromMenu()"><span id="themeMenuIcon">🌙</span> <span data-i18n="menu.theme" id="themeMenuText">Tema oscuro</span></div>
+                    <div class="dropdown-item menu-lang">
+                        <span>🌐</span>
+                        <select id="langSelectMenu" onchange="changeLangFromMenu()">
+                            <option value="es">Español</option>
+                            <option value="en">English</option>
+                        </select>
+                    </div>
                     <div class="dropdown-header" data-i18n="menu.help">Ayuda</div>
                     <div class="dropdown-item" onclick="showAbout()">ℹ️ <span data-i18n="menu.about">Acerca de</span></div>
                 </div>
@@ -550,13 +572,6 @@
         <div class="toolbar-separator hide-mobile"></div>
         <div class="toolbar-group">
             <select id="styleSelect" onchange="changeStyle()"></select>
-        </div>
-        <div class="toolbar-group" style="margin-left: auto;">
-            <select id="langSelect" onchange="changeLang()">
-                <option value="es">🇪🇸 ES</option>
-                <option value="en">🇬🇧 EN</option>
-            </select>
-            <button class="btn btn-icon" onclick="toggleTheme()" id="themeBtn" title="Tema">🌙</button>
         </div>
     </div>
 
