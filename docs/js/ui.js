@@ -9,6 +9,70 @@ function showToast(msg, isUpdate = false) {
 
 // Store scroll position between panels
 let lastScrollPercent = 0;
+let isScrollSyncing = false; // Prevent infinite scroll loops
+
+// ========== REAL-TIME SCROLL SYNC ==========
+
+function initScrollSync() {
+    const editor = document.getElementById('editor');
+    const preview = document.getElementById('preview');
+
+    // Sync editor scroll to preview
+    editor.addEventListener('scroll', () => {
+        if (isScrollSyncing) return;
+        if (window.innerWidth <= 768) return; // Only sync in dual-pane mode
+
+        const maxScroll = editor.scrollHeight - editor.clientHeight;
+        if (maxScroll <= 0) return;
+
+        const percent = editor.scrollTop / maxScroll;
+        syncPreviewScroll(percent);
+    });
+
+    // Sync preview scroll to editor (when preview iframe loads)
+    preview.addEventListener('load', () => {
+        try {
+            const doc = preview.contentDocument;
+            if (!doc) return;
+
+            doc.addEventListener('scroll', () => {
+                if (isScrollSyncing) return;
+                if (window.innerWidth <= 768) return;
+
+                const html = doc.documentElement;
+                const maxScroll = html.scrollHeight - html.clientHeight;
+                if (maxScroll <= 0) return;
+
+                const percent = html.scrollTop / maxScroll;
+                syncEditorScroll(percent);
+            });
+        } catch (e) {}
+    });
+}
+
+function syncPreviewScroll(percent) {
+    const preview = document.getElementById('preview');
+    try {
+        const doc = preview.contentDocument;
+        if (!doc) return;
+
+        const html = doc.documentElement;
+        const maxScroll = html.scrollHeight - html.clientHeight;
+
+        isScrollSyncing = true;
+        html.scrollTop = maxScroll * percent;
+        setTimeout(() => { isScrollSyncing = false; }, 50);
+    } catch (e) {}
+}
+
+function syncEditorScroll(percent) {
+    const editor = document.getElementById('editor');
+    const maxScroll = editor.scrollHeight - editor.clientHeight;
+
+    isScrollSyncing = true;
+    editor.scrollTop = maxScroll * percent;
+    setTimeout(() => { isScrollSyncing = false; }, 50);
+}
 
 function showPanel(panel) {
     // Get current scroll percentage before switching
