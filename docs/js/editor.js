@@ -27,9 +27,6 @@ function initEditor() {
         updateCharCount();
     });
 
-    // Divider drag (desktop)
-    initDivider();
-
     // File inputs
     document.getElementById('fileInput').addEventListener('change', handleFileOpen);
     document.getElementById('wordInput').addEventListener('change', handleWordImport);
@@ -40,27 +37,10 @@ function initEditor() {
     }
 }
 
-function initDivider() {
-    const divider = document.getElementById('divider');
-    let isDragging = false;
-
-    divider.addEventListener('mousedown', () => isDragging = true);
-
-    document.addEventListener('mousemove', (e) => {
-        if (!isDragging) return;
-        const container = document.querySelector('.main');
-        const rect = container.getBoundingClientRect();
-        const percent = ((e.clientX - rect.left) / rect.width) * 100;
-        document.getElementById('editorPanel').style.flex = `0 0 ${percent}%`;
-        document.getElementById('previewPanel').style.flex = `0 0 ${100 - percent}%`;
-    });
-
-    document.addEventListener('mouseup', () => isDragging = false);
-}
-
 function updatePreview() {
     const html = marked.parse(editor.value);
-    const fullHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>${styles[currentStyle]}</style></head><body>${html}</body></html>`;
+    const zoomCSS = typeof getPreviewZoomCSS === 'function' ? getPreviewZoomCSS() : '';
+    const fullHtml = `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><style>${styles[currentStyle]}${zoomCSS}</style></head><body>${html}</body></html>`;
     preview.srcdoc = fullHtml;
 }
 

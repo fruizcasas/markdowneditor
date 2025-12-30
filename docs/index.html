@@ -200,6 +200,33 @@
             justify-content: center;
         }
         .panel-sync-btn:hover { background: var(--accent); }
+        .zoom-controls {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            margin-left: 8px;
+        }
+        .zoom-btn {
+            background: var(--bg-tertiary);
+            border: none;
+            color: var(--text-primary);
+            width: 22px;
+            height: 22px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        .zoom-btn:hover { background: var(--accent); }
+        .zoom-label {
+            font-size: 11px;
+            min-width: 32px;
+            text-align: center;
+            color: var(--text-secondary);
+        }
         .panel-header {
             background: var(--bg-secondary);
             padding: 8px 12px;
@@ -437,7 +464,11 @@
             font-size: 18px;
             font-weight: 700;
             margin-top: 20px;
+            cursor: pointer;
+            transition: opacity 0.2s;
         }
+        .about-version:hover { opacity: 0.7; }
+        .about-version:active { opacity: 0.5; }
         .about-copyright {
             text-align: center;
             color: var(--text-secondary);
@@ -519,6 +550,11 @@
             <div class="panel-header">
                 <span data-i18n="panel.editor">Editor Markdown</span>
                 <div class="panel-header-right">
+                    <div class="zoom-controls hide-mobile">
+                        <button class="zoom-btn" onclick="editorZoomOut()" title="Zoom -">−</button>
+                        <span class="zoom-label" id="editorZoomLabel">16px</span>
+                        <button class="zoom-btn" onclick="editorZoomIn()" title="Zoom +">+</button>
+                    </div>
                     <span class="saved-indicator" id="savedIndicator"></span>
                     <button class="panel-collapse-btn hide-mobile" onclick="togglePanel('preview')" title="Ocultar/Mostrar Preview">▶</button>
                 </div>
@@ -533,6 +569,11 @@
                 <button class="panel-collapse-btn hide-mobile" onclick="togglePanel('editor')" title="Ocultar/Mostrar Editor">◀</button>
                 <span data-i18n="panel.preview">Vista previa</span>
                 <div class="panel-header-right hide-mobile">
+                    <div class="zoom-controls">
+                        <button class="zoom-btn" onclick="previewZoomOut()" title="Zoom -">−</button>
+                        <span class="zoom-label" id="previewZoomLabel">16px</span>
+                        <button class="zoom-btn" onclick="previewZoomIn()" title="Zoom +">+</button>
+                    </div>
                     <label class="sync-toggle-mini" title="Scroll sincronizado">
                         <input type="checkbox" id="scrollSyncCheckbox" checked onchange="toggleScrollSync()">
                         <span>🔗</span>
@@ -599,7 +640,7 @@
                     </div>
                 </div>
 
-                <div class="about-version" id="aboutVersion"></div>
+                <div class="about-version" id="aboutVersion" onclick="forceUpdate()" title="Clic para actualizar"></div>
                 <div class="about-copyright">© 2025 Fernando Ruiz Casas</div>
             </div>
         </div>

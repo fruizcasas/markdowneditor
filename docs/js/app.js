@@ -2,6 +2,7 @@
 // Entry point - initializes all modules
 
 function init() {
+    initZoom();
     initEditor();
     initKeyboardBar();
     initDivider();

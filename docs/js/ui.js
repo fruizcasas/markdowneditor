@@ -12,6 +12,90 @@ let lastScrollPercent = 0;
 let isScrollSyncing = false; // Prevent infinite scroll loops
 let scrollSyncEnabled = true; // Toggle for scroll sync
 
+// ========== ZOOM ==========
+
+const ZOOM_MIN = 10;
+const ZOOM_MAX = 32;
+const ZOOM_STEP = 2;
+const ZOOM_DEFAULT_EDITOR = 16;
+const ZOOM_DEFAULT_PREVIEW = 16;
+
+let editorZoom = ZOOM_DEFAULT_EDITOR;
+let previewZoom = ZOOM_DEFAULT_PREVIEW;
+
+function initZoom() {
+    // Load saved zoom levels
+    const settings = JSON.parse(localStorage.getItem(STORAGE_SETTINGS) || '{}');
+    editorZoom = settings.editorZoom || ZOOM_DEFAULT_EDITOR;
+    previewZoom = settings.previewZoom || ZOOM_DEFAULT_PREVIEW;
+
+    applyEditorZoom();
+    updateZoomLabels();
+}
+
+function saveZoomSettings() {
+    const settings = JSON.parse(localStorage.getItem(STORAGE_SETTINGS) || '{}');
+    settings.editorZoom = editorZoom;
+    settings.previewZoom = previewZoom;
+    localStorage.setItem(STORAGE_SETTINGS, JSON.stringify(settings));
+}
+
+function updateZoomLabels() {
+    document.getElementById('editorZoomLabel').textContent = editorZoom + 'px';
+    document.getElementById('previewZoomLabel').textContent = previewZoom + 'px';
+}
+
+function applyEditorZoom() {
+    document.getElementById('editor').style.fontSize = editorZoom + 'px';
+}
+
+function editorZoomIn() {
+    if (editorZoom < ZOOM_MAX) {
+        editorZoom += ZOOM_STEP;
+        applyEditorZoom();
+        updateZoomLabels();
+        saveZoomSettings();
+    }
+}
+
+function editorZoomOut() {
+    if (editorZoom > ZOOM_MIN) {
+        editorZoom -= ZOOM_STEP;
+        applyEditorZoom();
+        updateZoomLabels();
+        saveZoomSettings();
+    }
+}
+
+function previewZoomIn() {
+    if (previewZoom < ZOOM_MAX) {
+        previewZoom += ZOOM_STEP;
+        updateZoomLabels();
+        saveZoomSettings();
+        updatePreview();
+    }
+}
+
+function previewZoomOut() {
+    if (previewZoom > ZOOM_MIN) {
+        previewZoom -= ZOOM_STEP;
+        updateZoomLabels();
+        saveZoomSettings();
+        updatePreview();
+    }
+}
+
+function getPreviewZoomCSS() {
+    return `
+        body { font-size: ${previewZoom}px !important; }
+        p, li, td, th, dd, dt { font-size: inherit !important; }
+        h1 { font-size: 2em !important; }
+        h2 { font-size: 1.5em !important; }
+        h3 { font-size: 1.25em !important; }
+        pre, code { font-size: 0.9em !important; }
+    `;
+}
+
 // ========== REAL-TIME SCROLL SYNC ==========
 
 function initScrollSync() {
@@ -170,28 +254,33 @@ function fallbackCopy(text) {
 
 function toggleMenu() {
     const menu = document.getElementById('mainMenu');
+    const wasOpen = menu.classList.contains('show');
     closeAllDropdowns();
-    menu.classList.toggle('show');
-
-    if (menu.classList.contains('show')) {
-        setTimeout(() => {
-            document.addEventListener('click', closeMenuOnClickOutside);
-        }, 10);
-    }
-}
-
-function closeMenuOnClickOutside(e) {
-    const menu = document.getElementById('mainMenu');
-    const btn = e.target.closest('.dropdown');
-    if (!btn || !btn.contains(menu)) {
-        menu.classList.remove('show');
-        document.removeEventListener('click', closeMenuOnClickOutside);
+    if (!wasOpen) {
+        menu.classList.add('show');
     }
 }
 
 function closeAllDropdowns() {
     document.querySelectorAll('.dropdown-content').forEach(d => d.classList.remove('show'));
 }
+
+// Global click handler to close dropdowns when clicking outside
+document.addEventListener('click', (e) => {
+    // Check if click is inside a dropdown or its toggle button
+    const dropdown = e.target.closest('.dropdown');
+    if (!dropdown) {
+        // Click outside any dropdown - close all
+        closeAllDropdowns();
+    }
+});
+
+// Also close on Escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeAllDropdowns();
+    }
+});
 
 // ========== ABOUT MODAL ==========
 
