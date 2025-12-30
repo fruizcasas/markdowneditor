@@ -212,9 +212,11 @@ function updateKeyboardBarPosition() {
     if (!bar.classList.contains('show')) return;
 
     if (window.visualViewport) {
-        // Calculate keyboard height using visualViewport
-        const keyboardHeight = window.innerHeight - window.visualViewport.height;
-        bar.style.bottom = keyboardHeight + 'px';
+        // Position bar at bottom of visual viewport (just above keyboard)
+        const vp = window.visualViewport;
+        const barHeight = bar.offsetHeight || 44;
+        bar.style.top = (vp.offsetTop + vp.height - barHeight) + 'px';
+        bar.style.bottom = 'auto';
     }
 }
 
@@ -230,6 +232,7 @@ function showKeyboardBar() {
 function hideKeyboardBar() {
     const bar = document.getElementById('keyboardBar');
     bar.classList.remove('show');
+    bar.style.top = 'auto';
     bar.style.bottom = '0';
 }
 
