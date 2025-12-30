@@ -339,6 +339,25 @@
             font-size: 11px;
             margin-top: 8px;
         }
+        /* Style Editor Modal */
+        .se-section { margin-bottom: 16px; }
+        .se-section > label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 12px; color: var(--text-secondary); }
+        .se-section select { width: 100%; padding: 8px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-tertiary); color: var(--text-primary); }
+        .se-mode { display: flex; align-items: center; gap: 8px; }
+        .se-mode label { margin-bottom: 0; }
+        .se-mode .btn { padding: 6px 12px; font-size: 12px; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 4px; cursor: pointer; color: var(--text-secondary); }
+        .se-mode .btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+        .se-properties { max-height: 300px; overflow-y: auto; }
+        .se-prop { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; padding: 8px; background: var(--bg-tertiary); border-radius: 6px; }
+        .se-prop > label { width: 100px; font-size: 12px; color: var(--text-secondary); flex-shrink: 0; }
+        .se-prop input[type="text"], .se-prop select { flex: 1; padding: 6px 8px; border-radius: 4px; border: 1px solid var(--border); background: var(--bg-primary); color: var(--text-primary); font-size: 12px; }
+        .se-color-wrap { display: flex; gap: 6px; flex: 1; }
+        .se-color-wrap input[type="text"] { flex: 1; }
+        .se-color-wrap input[type="color"] { width: 32px; height: 32px; padding: 0; border: none; border-radius: 4px; cursor: pointer; }
+        .se-actions { display: flex; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+        .se-actions .btn { flex: 1; padding: 10px; border-radius: 6px; font-weight: 500; cursor: pointer; border: none; }
+        .se-actions .btn-primary { background: var(--accent); color: #fff; }
+        .se-actions .btn-secondary { background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border); }
     </style>
 </head>
 <body>
@@ -372,10 +391,8 @@
         </div>
         <div class="toolbar-separator hide-mobile"></div>
         <div class="toolbar-group">
-            <select id="styleSelect" onchange="changeStyle()">
-                <option value="gitlab">GitLab</option>
-                <option value="default">Por defecto</option>
-            </select>
+            <select id="styleSelect" onchange="changeStyle()"></select>
+            <button class="btn btn-icon" onclick="showStyleEditor()" title="Editor de estilos">🎨</button>
         </div>
         <div class="toolbar-group" style="margin-left: auto;">
             <select id="langSelect" onchange="changeLang()">
@@ -457,6 +474,24 @@
 
                 <div class="about-version" id="aboutVersion"></div>
                 <div class="about-copyright">© 2025 Fernando Ruiz Casas</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Style Editor Modal -->
+    <div class="modal-overlay" id="styleEditorModal" onclick="if(event.target===this)closeStyleEditor()">
+        <div class="modal" style="max-width: 500px;">
+            <div class="modal-header">
+                <h2 data-i18n="style.editor">Editor de Estilos</h2>
+                <button class="modal-close" onclick="closeStyleEditor()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="styleEditorContent"></div>
+                <div class="se-actions">
+                    <button class="btn btn-secondary" onclick="closeStyleEditor()" data-i18n="style.cancel">Cancelar</button>
+                    <button class="btn btn-secondary" onclick="applyStyleEditor()" data-i18n="style.apply">Aplicar</button>
+                    <button class="btn btn-primary" onclick="saveStyleAs()" data-i18n="style.saveas">Guardar como...</button>
+                </div>
             </div>
         </div>
     </div>
