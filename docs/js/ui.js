@@ -250,6 +250,63 @@ function fallbackCopy(text) {
     document.body.removeChild(ta);
 }
 
+// Copy formatted preview content (for pasting in Word/Email)
+async function copyPreviewFormatted() {
+    const preview = document.getElementById('preview');
+    const iframeDoc = preview.contentDocument || preview.contentWindow.document;
+    const body = iframeDoc.body;
+
+    if (!body) {
+        showToast('❌ No hay contenido para copiar');
+        return;
+    }
+
+    // Get HTML content
+    const html = body.innerHTML;
+    const plainText = body.innerText;
+
+    try {
+        // Try modern Clipboard API with HTML support
+        if (navigator.clipboard && window.ClipboardItem) {
+            const htmlBlob = new Blob([html], { type: 'text/html' });
+            const textBlob = new Blob([plainText], { type: 'text/plain' });
+
+            await navigator.clipboard.write([
+                new ClipboardItem({
+                    'text/html': htmlBlob,
+                    'text/plain': textBlob
+                })
+            ]);
+            showToast('📋 ' + t('status.copied'));
+        } else {
+            // Fallback: select and copy from iframe
+            const selection = iframeDoc.getSelection();
+            const range = iframeDoc.createRange();
+            range.selectNodeContents(body);
+            selection.removeAllRanges();
+            selection.addRange(range);
+            iframeDoc.execCommand('copy');
+            selection.removeAllRanges();
+            showToast('📋 ' + t('status.copied'));
+        }
+    } catch (err) {
+        console.error('Copy error:', err);
+        // Last resort fallback
+        try {
+            const selection = iframeDoc.getSelection();
+            const range = iframeDoc.createRange();
+            range.selectNodeContents(body);
+            selection.removeAllRanges();
+            selection.addRange(range);
+            iframeDoc.execCommand('copy');
+            selection.removeAllRanges();
+            showToast('📋 ' + t('status.copied'));
+        } catch (e) {
+            showToast('❌ Error al copiar');
+        }
+    }
+}
+
 // ========== MENU ==========
 
 function toggleMenu() {

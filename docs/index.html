@@ -200,6 +200,20 @@
             justify-content: center;
         }
         .panel-sync-btn:hover { background: var(--accent); }
+        .panel-action-btn {
+            background: var(--bg-tertiary);
+            border: none;
+            color: var(--text-primary);
+            width: 28px;
+            height: 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .panel-action-btn:hover { background: var(--accent); }
         .zoom-controls {
             display: flex;
             align-items: center;
@@ -570,6 +584,7 @@
                 <button class="panel-collapse-btn hide-mobile" onclick="togglePanel('editor')" title="Ocultar/Mostrar Editor">◀</button>
                 <span data-i18n="panel.preview">Vista previa</span>
                 <div class="panel-header-right hide-mobile">
+                    <button class="panel-action-btn" onclick="copyPreviewFormatted()" title="Copiar contenido formateado">📋</button>
                     <div class="zoom-controls">
                         <button class="zoom-btn" onclick="previewZoomOut()" title="Zoom -">−</button>
                         <span class="zoom-label" id="previewZoomLabel">16px</span>
