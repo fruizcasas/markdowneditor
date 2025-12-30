@@ -49,15 +49,16 @@
             text-shadow: 0 1px 3px rgba(0,0,0,0.3);
         }
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        html { height: 100%; height: 100dvh; }
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
-            min-height: 100vh;
-            min-height: 100dvh;
+            height: 100vh;
+            height: 100dvh;
             display: flex;
             flex-direction: column;
-            overflow-x: hidden;
+            overflow: hidden;
             padding-left: var(--safe-left);
             padding-right: var(--safe-right);
         }
