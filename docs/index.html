@@ -254,6 +254,11 @@
             flex-shrink: 0;
         }
         .editor-container, .preview-container { flex: 1; overflow: hidden; display: flex; min-height: 0; }
+        .editor-container.drag-over {
+            outline: 3px dashed var(--accent);
+            outline-offset: -3px;
+            background: rgba(233, 69, 96, 0.1);
+        }
         #editor {
             flex: 1;
             width: 100%;
